@@ -656,7 +656,7 @@ app.get('/track/:trackingCode/pdf', async (req, res, next) => {
 
     const pdfBuffer = await createW7PdfBuffer(application);
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${application.trackingCode}-w7-summary.pdf"`);
+    res.setHeader('Content-Disposition', `attachment; filename="${application.trackingCode}-official-w7.pdf"`);
     return res.send(pdfBuffer);
   } catch (error) {
     return next(error);
@@ -842,7 +842,7 @@ app.get('/admin/applications/:id/pdf', requireAdmin, async (req, res, next) => {
 
     const pdfBuffer = await createW7PdfBuffer(application);
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${application.trackingCode}-w7-summary.pdf"`);
+    res.setHeader('Content-Disposition', `attachment; filename="${application.trackingCode}-official-w7.pdf"`);
     return res.send(pdfBuffer);
   } catch (error) {
     return next(error);

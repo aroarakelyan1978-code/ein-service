@@ -2017,6 +2017,7 @@ th {
 
 .admin-flat-intro h1 {
   margin-bottom: 10px;
+  font-size: clamp(1.8rem, 3vw, 2.55rem);
 }
 
 .admin-flat-intro p {
@@ -2033,7 +2034,7 @@ th {
 .admin-flat-box h2 {
   margin-bottom: 18px;
   text-align: center;
-  font-size: clamp(1.55rem, 2.5vw, 2.25rem);
+  font-size: clamp(1.15rem, 1.7vw, 1.55rem);
 }
 
 .admin-login-box,
