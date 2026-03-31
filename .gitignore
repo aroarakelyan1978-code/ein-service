@@ -1,5 +1,6 @@
 node_modules
 .env
+.playwright-cli
 data/applications.json
 data/drafts.json
 data/email-log.json
