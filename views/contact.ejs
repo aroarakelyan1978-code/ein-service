@@ -1,0 +1,87 @@
+<%- include('partials/header') %>
+
+<section class="contact-shell">
+  <div class="container contact-container">
+    <header class="contact-header">
+      <h1>Contact Us</h1>
+      <p>If you have any questions about your application or issues with an existing order, please contact us at:</p>
+      <p><a href="mailto:<%= site.supportEmail %>"><%= site.supportEmail %></a>. Customer Support is available <%= site.supportHours %>.</p>
+    </header>
+
+    <div class="contact-card">
+      <p class="contact-card-intro">Please complete the form below with your question. Customer Support will review your request and respond within 24 hours. If the request is received outside of business hours, we will respond the following business day.</p>
+
+      <% if (contactSubmitted) { %>
+        <div class="contact-alert contact-alert-success">Your message has been received. Our support team will review it and follow up by email.</div>
+      <% } %>
+
+      <% if (contactError) { %>
+        <div class="contact-alert contact-alert-error"><%= contactError %></div>
+      <% } %>
+
+      <form class="contact-form" action="/contact" method="post" novalidate>
+        <div class="contact-field">
+          <span>Name *</span>
+          <div class="contact-name-grid">
+            <div>
+              <input type="text" name="firstName" value="<%= contactForm.firstName || '' %>" required />
+              <small>First</small>
+            </div>
+            <div>
+              <input type="text" name="lastName" value="<%= contactForm.lastName || '' %>" required />
+              <small>Last</small>
+            </div>
+          </div>
+        </div>
+
+        <label class="contact-field">
+          <span>Email *</span>
+          <input type="email" name="email" value="<%= contactForm.email || '' %>" required />
+        </label>
+
+        <label class="contact-field">
+          <span>Phone Number</span>
+          <input type="tel" name="phone" value="<%= contactForm.phone || '' %>" />
+        </label>
+
+        <label class="contact-field">
+          <span>Order # (if applicable)</span>
+          <input type="text" name="orderNumber" value="<%= contactForm.orderNumber || '' %>" />
+        </label>
+
+        <label class="contact-field">
+          <span>How can we help you? *</span>
+          <textarea name="message" rows="4" required><%= contactForm.message || '' %></textarea>
+        </label>
+
+        <button class="contact-submit-button" type="submit">Submit</button>
+      </form>
+    </div>
+
+    <div class="contact-info-grid">
+      <article class="contact-info-card">
+        <div class="contact-info-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img" focusable="false">
+            <circle cx="32" cy="32" r="16"></circle>
+            <path d="M32 22v10l6 4"></path>
+          </svg>
+        </div>
+        <h2>Service Hours</h2>
+        <p><%= site.supportHours %></p>
+      </article>
+
+      <article class="contact-info-card">
+        <div class="contact-info-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img" focusable="false">
+            <path d="M14 20h36a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V24a4 4 0 0 1 4-4Z"></path>
+            <path d="m12 24 20 14 20-14"></path>
+          </svg>
+        </div>
+        <h2>Support Email</h2>
+        <p><a href="mailto:<%= site.supportEmail %>"><%= site.supportEmail %></a></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

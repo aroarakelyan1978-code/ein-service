@@ -1,0 +1,71 @@
+<%- include('partials/header') %>
+
+<section class="landing-simple track-simple-page">
+  <div class="container landing-simple-shell">
+    <section class="landing-simple-intro">
+      <h1>Track Your ITIN Order</h1>
+      <p>Use the tracking code and email address from your confirmation message to view internal status updates.</p>
+    </section>
+
+    <section class="landing-simple-box track-simple-box">
+      <h2>TRACK YOUR ORDER</h2>
+      <form class="track-simple-form" method="get" action="/track">
+        <div class="track-simple-form-grid">
+          <label class="track-simple-field">
+            <span>Tracking Code</span>
+            <input type="text" name="code" value="<%= trackingResult ? trackingResult.trackingCode : (trackingCodeQuery || '') %>" />
+          </label>
+          <label class="track-simple-field">
+            <span>Email Address</span>
+            <input type="email" name="email" value="<%= trackingResult ? trackingResult.contact.email : (trackingEmailQuery || '') %>" />
+          </label>
+        </div>
+        <div class="track-simple-action-row">
+          <button class="landing-flat-button" type="submit">VIEW STATUS</button>
+        </div>
+      </form>
+    </section>
+
+    <% if (trackingError) { %>
+      <section class="landing-simple-box track-simple-message track-simple-message-error">
+        <p><%= trackingError %></p>
+      </section>
+    <% } %>
+
+    <% if (trackingResult) { %>
+      <section class="landing-simple-box track-simple-result">
+        <div class="track-simple-result-head">
+          <div>
+            <p class="track-simple-label">Current Status</p>
+            <h2><%= trackingResult.status %></h2>
+            <p>Tracking code: <strong><%= trackingResult.trackingCode %></strong></p>
+          </div>
+          <a class="landing-flat-button" href="/track/<%= trackingResult.trackingCode %>/pdf?email=<%= encodeURIComponent(trackingResult.contact.email) %>">DOWNLOAD W-7 SUMMARY</a>
+        </div>
+
+        <div class="track-simple-result-grid">
+          <div class="track-simple-item">
+            <span>Applicant</span>
+            <strong><%= trackingResult.personal.firstName %> <%= trackingResult.personal.lastName %></strong>
+          </div>
+          <div class="track-simple-item">
+            <span>Submitted</span>
+            <strong><%= new Date(trackingResult.createdAt).toLocaleString() %></strong>
+          </div>
+          <div class="track-simple-item">
+            <span>Application Type</span>
+            <strong><%= trackingResult.applicationType === 'renewal' ? 'Renewal' : 'New ITIN' %></strong>
+          </div>
+          <div class="track-simple-item">
+            <span>Reason</span>
+            <strong><%= trackingResult.reason.label %></strong>
+          </div>
+        </div>
+
+        <p class="track-simple-note"><%= site.disclosure %> Status updates here reflect our internal assistance workflow, not official IRS processing milestones.</p>
+      </section>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

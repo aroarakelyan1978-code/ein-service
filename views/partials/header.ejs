@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= pageTitle ? `${pageTitle} | ${site.brandName}` : site.brandName %></title>
+  <meta name="description" content="<%= metaDescription || 'Private ITIN application assistance with secure intake, expert review, and clear compliance disclosures.' %>" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <% if (canonical) { %>
+    <link rel="canonical" href="<%= canonical %>" />
+  <% } %>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="<%= pageTitle ? `${pageTitle} | ${site.brandName}` : site.brandName %>" />
+  <meta property="og:description" content="<%= metaDescription || 'Private ITIN application assistance with secure intake, expert review, and clear compliance disclosures.' %>" />
+  <meta property="og:url" content="<%= canonical || site.baseUrl %>" />
+  <meta property="og:site_name" content="<%= site.brandName %>" />
+  <% if (structuredData) { %>
+    <% structuredData.forEach(function(item) { %>
+      <script type="application/ld+json"><%- JSON.stringify(item) %></script>
+    <% }) %>
+  <% } %>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="<%= bodyClass || '' %>">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="disclosure-banner">
+      <p>Disclosure: <%= site.brandName %> is a private third-party service and is not affiliated with the IRS. Service fees apply. You may apply directly with the IRS at no cost via <a href="https://www.irs.gov" target="_blank" rel="noopener noreferrer">IRS.gov</a>.</p>
+    </div>
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <a href="/" class="brand" aria-label="<%= site.brandName %> home">
+          <span class="brand-copy">
+            <strong><%= site.brandName %></strong>
+            <span>IRS ITIN FORM</span>
+          </span>
+          <span class="brand-mark" aria-hidden="true">
+            <img src="/icon-building.png" alt="" />
+          </span>
+        </a>
+        <a class="header-help-button" href="/contact">HELP</a>
+      </div>
+    </div>
+  </header>
+  <main id="main-content">

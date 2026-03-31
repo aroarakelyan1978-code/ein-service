@@ -1,0 +1,118 @@
+<%- include('partials/header') %>
+
+<section class="legal-document-wrap">
+  <div class="container legal-document-container">
+    <article class="legal-document">
+      <header class="legal-document-header">
+        <h1>Terms and Conditions</h1>
+        <p class="legal-document-date"><strong>Updated:</strong> <%= site.termsEffectiveDate %></p>
+      </header>
+
+      <section class="legal-document-section">
+        <h2>Introduction</h2>
+        <p>Welcome to <%= site.businessName %>. By accessing and using our website <a href="<%= site.baseUrl %>"><%= site.baseUrl %></a>, you agree to the following Terms and Conditions.</p>
+        <p>We are a private third-party service and are NOT affiliated with the Internal Revenue Service (IRS).</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>1. Services Provided</h2>
+        <p>We provide assistance with ITIN (Individual Taxpayer Identification Number) applications, including:</p>
+        <ul>
+          <li>Guidance and review of your information</li>
+          <li>Preparation of IRS Form W-7</li>
+          <li>Document checklist support</li>
+        </ul>
+        <p>We do NOT issue ITINs. Only the IRS can assign an ITIN.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>2. No Government Affiliation</h2>
+        <p>We are NOT a government agency.</p>
+        <p>We are NOT affiliated with the IRS.</p>
+        <p>Our fees are for assistance and preparation services only.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>3. User Responsibilities</h2>
+        <p>By using our services, you agree to:</p>
+        <ul>
+          <li>Provide accurate and complete information</li>
+          <li>Submit valid supporting documents</li>
+          <li>Review all generated forms before submission</li>
+        </ul>
+        <p>We are not responsible for delays or rejections caused by incorrect information provided by you.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>4. Fees &amp; Payments</h2>
+        <ul>
+          <li>All fees are clearly disclosed before purchase</li>
+          <li>Payments are for service and assistance, NOT government fees</li>
+          <li>IRS does not charge for issuing an ITIN</li>
+        </ul>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>5. Refund Policy</h2>
+        <ul>
+          <li>Refund eligibility depends on service status</li>
+          <li>Once processing has started, refunds may be limited or unavailable</li>
+          <li>Completed or delivered services are non-refundable</li>
+        </ul>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>6. Processing Time</h2>
+        <p>We do NOT control IRS processing times. Estimated timelines are provided for informational purposes only.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>7. Limitation of Liability</h2>
+        <p>To the maximum extent permitted by law:</p>
+        <ul>
+          <li>We are not liable for indirect or consequential damages</li>
+          <li>We do not guarantee approval of your ITIN application</li>
+        </ul>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>8. Data Usage</h2>
+        <p>Your data will be handled in accordance with our <a href="/privacy">Privacy Policy</a>.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>9. Intellectual Property</h2>
+        <p>All website content, branding, and materials are owned by <%= site.businessName %> and may not be copied or reused without permission.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>10. Termination</h2>
+        <p>We reserve the right to suspend or terminate services if:</p>
+        <ul>
+          <li>Fraudulent activity is suspected</li>
+          <li>Terms are violated</li>
+        </ul>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>11. Changes to Terms</h2>
+        <p>We may update these Terms at any time. Continued use of the website constitutes acceptance of updated terms.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>12. Governing Law</h2>
+        <p>These Terms are governed by the laws of the State of <%= site.governingState %>.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>13. Contact Information</h2>
+        <p><%= site.businessName %></p>
+        <p><%= site.businessAddress %></p>
+        <p>Email: <a href="mailto:<%= site.supportEmail %>"><%= site.supportEmail %></a></p>
+        <p>Website: <a href="<%= site.baseUrl %>"><%= site.baseUrl %></a></p>
+      </section>
+    </article>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+
+<section class="subpage-hero">
+  <div class="container">
+    <span class="section-kicker">Admin dashboard</span>
+    <h1>Applications</h1>
+    <p>Signed in as <strong><%= adminEmail %></strong></p>
+    <form method="post" action="/admin/logout">
+      <button class="button button-secondary" type="submit">Log out</button>
+    </form>
+  </div>
+</section>
+
+<section class="container section-pad">
+  <div class="card table-card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tracking Code</th>
+            <th>Applicant</th>
+            <th>Status</th>
+            <th>Reason</th>
+            <th>Submitted</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!applications.length) { %>
+            <tr>
+              <td colspan="6">No applications yet.</td>
+            </tr>
+          <% } %>
+          <% applications.forEach(function(application) { %>
+            <tr>
+              <td><%= application.trackingCode %></td>
+              <td><%= application.personal.firstName %> <%= application.personal.lastName %></td>
+              <td><span class="status-chip"><%= application.status %></span></td>
+              <td><%= application.reason.label %></td>
+              <td><%= new Date(application.createdAt).toLocaleString() %></td>
+              <td><a href="/admin/applications/<%= application.id %>">Open</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

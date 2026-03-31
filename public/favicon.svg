@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ITIN Assist">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f4f8f" />
+      <stop offset="100%" stop-color="#7da4dc" />
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#g)" />
+  <path d="M32 15 45 20v11c0 10.3-5.5 18.2-13 22-7.5-3.8-13-11.7-13-22V20l13-5Z" fill="#fff" opacity=".95" />
+  <path d="M23 31h18M23 37h14" stroke="#1f4f8f" stroke-width="3.2" stroke-linecap="round" />
+</svg>

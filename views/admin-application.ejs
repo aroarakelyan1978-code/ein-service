@@ -1,0 +1,67 @@
+<%- include('partials/header') %>
+
+<section class="subpage-hero">
+  <div class="container">
+    <span class="section-kicker">Admin application view</span>
+    <h1><%= application.trackingCode %></h1>
+    <p><%= application.personal.firstName %> <%= application.personal.lastName %> • <%= application.contact.email %></p>
+  </div>
+</section>
+
+<section class="container section-pad admin-detail-grid">
+  <article class="card">
+    <div class="detail-head">
+      <h2>Case overview</h2>
+      <a class="button button-secondary" href="/admin/applications/<%= application.id %>/pdf">Download W-7 Summary</a>
+    </div>
+    <div class="field-grid two-up compact-grid">
+      <div class="info-tile">
+        <span>Status</span>
+        <strong><%= application.status %></strong>
+      </div>
+      <div class="info-tile">
+        <span>Application type</span>
+        <strong><%= application.applicationType === 'renewal' ? 'Renewal' : 'New ITIN' %></strong>
+      </div>
+      <div class="info-tile">
+        <span>Reason</span>
+        <strong><%= application.reason.label %></strong>
+      </div>
+      <div class="info-tile">
+        <span>Email status</span>
+        <strong><%= application.emailStatus || 'unknown' %></strong>
+      </div>
+    </div>
+
+    <form class="status-form" method="post" action="/admin/applications/<%= application.id %>/status">
+      <label class="field-card">
+        <span>Update status</span>
+        <select name="status">
+          <% applicationStatuses.forEach(function(status) { %>
+            <option value="<%= status %>" <%= application.status === status ? 'selected' : '' %>><%= status %></option>
+          <% }) %>
+        </select>
+      </label>
+      <button class="button button-primary" type="submit">Save Status</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Applicant information</h2>
+    <dl class="detail-list">
+      <div><dt>Name</dt><dd><%= application.personal.firstName %> <%= application.personal.middleName %> <%= application.personal.lastName %></dd></div>
+      <div><dt>Date of birth</dt><dd><%= application.personal.dateOfBirth %></dd></div>
+      <div><dt>Country of citizenship</dt><dd><%= application.personal.countryOfCitizenship %></dd></div>
+      <div><dt>Country of birth</dt><dd><%= application.personal.countryOfBirth %></dd></div>
+      <div><dt>Phone</dt><dd><%= application.contact.phone %></dd></div>
+      <div><dt>Mailing address</dt><dd><%= application.mailingAddress.line1 %>, <%= application.mailingAddress.city %>, <%= application.mailingAddress.stateProvince %> <%= application.mailingAddress.postalCode %>, <%= application.mailingAddress.country %></dd></div>
+      <div><dt>Foreign address</dt><dd><%= application.foreignAddress.line1 %>, <%= application.foreignAddress.city %>, <%= application.foreignAddress.stateProvince %> <%= application.foreignAddress.postalCode %>, <%= application.foreignAddress.country %></dd></div>
+      <div><dt>Document type</dt><dd><%= application.foreignStatus.identificationType %></dd></div>
+      <div><dt>Document issuer</dt><dd><%= application.foreignStatus.identificationIssuer %></dd></div>
+      <div><dt>Document number</dt><dd><%= application.foreignStatus.identificationNumber %></dd></div>
+      <div><dt>Selected supporting documents</dt><dd><%= application.supportingDocuments.selected.join(', ') %></dd></div>
+    </dl>
+  </article>
+</section>
+
+<%- include('partials/footer') %>

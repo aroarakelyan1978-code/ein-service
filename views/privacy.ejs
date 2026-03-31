@@ -1,0 +1,141 @@
+<%- include('partials/header') %>
+
+<section class="legal-document-wrap">
+  <div class="container legal-document-container">
+    <article class="legal-document">
+      <header class="legal-document-header">
+        <h1>Privacy Policy</h1>
+        <p class="legal-document-date"><strong>Updated:</strong> <%= site.privacyEffectiveDate %></p>
+      </header>
+
+      <section class="legal-document-section">
+        <h2>Introduction</h2>
+        <p>Welcome to <%= site.businessName %>. We value your privacy. This Privacy Policy applies to this website, <a href="<%= site.baseUrl %>"><%= site.baseUrl %></a>, and to our ITIN application assistance services.</p>
+        <p>This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use this website or communicate with us regarding our services.</p>
+        <p>We are a private, third-party service provider and are NOT affiliated with the Internal Revenue Service (IRS).</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>1. Information We Collect</h2>
+        <p>We may collect information about you when you visit our website or otherwise interact with our services.</p>
+        <h3>a. Personal Information</h3>
+        <ul>
+          <li>Full name</li>
+          <li>Date of birth</li>
+          <li>Mailing address</li>
+          <li>Email address</li>
+          <li>Phone number</li>
+          <li>Citizenship and immigration-related details</li>
+          <li>Tax-related information required for ITIN application (Form W-7)</li>
+        </ul>
+        <h3>b. Sensitive Information</h3>
+        <ul>
+          <li>Identification documents (passport, national ID, etc.)</li>
+          <li>Supporting documentation required for ITIN processing</li>
+        </ul>
+        <h3>c. Automatically Collected Information</h3>
+        <ul>
+          <li>IP address</li>
+          <li>Browser type</li>
+          <li>Device information</li>
+          <li>Pages visited and usage data (via cookies and analytics tools)</li>
+        </ul>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>2. How We Use Your Information</h2>
+        <ul>
+          <li>Prepare and assist with your ITIN application</li>
+          <li>Generate pre-filled IRS Form W-7</li>
+          <li>Communicate with you regarding your application</li>
+          <li>Provide customer support</li>
+          <li>Improve our website and services</li>
+          <li>Comply with legal obligations</li>
+        </ul>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>3. How We Share Your Information</h2>
+        <p>We do NOT sell your personal information.</p>
+        <p>We may share your information with:</p>
+        <ul>
+          <li>Service providers (hosting, payment processors, email systems)</li>
+          <li>Government agencies (ONLY if required and authorized by you)</li>
+          <li>Legal authorities if required by law</li>
+        </ul>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>4. Data Security</h2>
+        <p>We implement industry-standard security measures, including:</p>
+        <ul>
+          <li>SSL encryption</li>
+          <li>Secure data storage</li>
+          <li>Restricted access to sensitive information</li>
+        </ul>
+        <p>However, no system is 100% secure, and we cannot guarantee absolute security.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>5. Data Retention</h2>
+        <p>We retain your information only as long as necessary to:</p>
+        <ul>
+          <li>Complete your requested services</li>
+          <li>Comply with legal and regulatory obligations</li>
+        </ul>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>6. Cookies &amp; Tracking Technologies</h2>
+        <p>We use cookies and similar technologies to:</p>
+        <ul>
+          <li>Improve user experience</li>
+          <li>Analyze website traffic</li>
+          <li>Support marketing efforts</li>
+        </ul>
+        <p>You can disable cookies in your browser settings.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>7. Your Rights</h2>
+        <p>Depending on your location, you may have the right to:</p>
+        <ul>
+          <li>Access your personal data</li>
+          <li>Request correction or deletion</li>
+          <li>Withdraw consent</li>
+        </ul>
+        <p>To exercise these rights, contact us at: <a href="mailto:<%= site.supportEmail %>"><%= site.supportEmail %></a></p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>8. Third-Party Links</h2>
+        <p>Our website may contain links to third-party websites. We are not responsible for their privacy practices.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>9. Children's Privacy</h2>
+        <p>Our services are not intended for individuals under 18. We do not knowingly collect data from minors.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>10. Disclaimer</h2>
+        <p>We are NOT the IRS and are NOT affiliated with any government agency. We provide assistance services only.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>11. Changes to This Policy</h2>
+        <p>We may update this Privacy Policy at any time. Changes will be posted on this page.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>12. Contact Us</h2>
+        <p><%= site.businessName %></p>
+        <p><%= site.businessAddress %></p>
+        <p>Email: <a href="mailto:<%= site.supportEmail %>"><%= site.supportEmail %></a></p>
+        <p>Website: <a href="<%= site.baseUrl %>"><%= site.baseUrl %></a></p>
+      </section>
+    </article>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

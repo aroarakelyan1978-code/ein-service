@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+
+<section class="subpage-hero">
+  <div class="container narrow">
+    <span class="section-kicker">Application received</span>
+    <h1>Thank you. Your request has been submitted.</h1>
+    <p>We received your ITIN assistance intake and assigned a tracking code for follow-up.</p>
+  </div>
+</section>
+
+<section class="container section-pad narrow">
+  <article class="card thank-you-card">
+    <div class="tracking-pill"><%= application.trackingCode %></div>
+    <p><strong>Current status:</strong> <%= application.status %></p>
+    <p><%= site.disclosure %> The IRS does not charge for issuing an ITIN, and ITIN issuance decisions remain with the IRS.</p>
+    <div class="thank-you-actions">
+      <a class="button button-primary" href="<%= trackUrl %>">Track Application</a>
+      <a class="button button-secondary" href="/track/<%= application.trackingCode %>/pdf?email=<%= encodeURIComponent(application.contact.email) %>">Download W-7 Summary</a>
+    </div>
+    <div class="next-steps">
+      <h2>Next steps</h2>
+      <ul>
+        <li>Our team reviews your intake for completeness.</li>
+        <li>You may be contacted if documents or clarifications are needed.</li>
+        <li>You can use your tracking code and email to monitor the request.</li>
+      </ul>
+    </div>
+  </article>
+</section>
+
+<%- include('partials/footer') %>

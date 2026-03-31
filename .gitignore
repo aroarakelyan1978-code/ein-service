@@ -1,0 +1,5 @@
+node_modules
+.env
+data/applications.json
+data/drafts.json
+data/email-log.json

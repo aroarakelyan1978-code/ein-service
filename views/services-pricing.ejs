@@ -1,0 +1,45 @@
+<%- include('partials/header') %>
+
+<section class="legal-document-wrap">
+  <div class="container legal-document-container">
+    <article class="legal-document">
+      <header class="legal-document-header">
+        <h1>Services &amp; Pricing</h1>
+        <p class="legal-document-date"><strong>Updated:</strong> <%= site.servicesPricingEffectiveDate %></p>
+      </header>
+
+      <section class="legal-document-section">
+        <h2>Services</h2>
+        <p><%= site.businessName %> is a private third-party assistance service. We provide guided support for ITIN applications, including secure intake, information review, Form W-7 preparation assistance, document checklist guidance, and customer support.</p>
+        <p>We are not affiliated with the IRS or any government agency. We do not issue ITINs. Final issuance decisions remain with the IRS.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>Pricing</h2>
+        <p>Our service fees apply only to private preparation and assistance services. IRS does not charge a fee for issuing an ITIN.</p>
+
+        <h3>Standard ITIN Application Assistance - <%= site.serviceFeeDisplay %></h3>
+        <p>Standard service includes guided intake, review of the information you provide, W-7 preparation support, document checklist guidance, and internal order status access. Initial review generally begins within 1 business day.</p>
+
+        <h3>Priority Review Availability - Contact Us</h3>
+        <p>If you need faster internal review, please contact us before ordering. Priority handling, when available, is quoted separately and is not a government fee.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>Cancellation and Refunds</h2>
+        <p>If you request cancellation before review or preparation work begins, a refund may be available. Once processing has started, refunds may be partial or unavailable depending on the status of the work already completed.</p>
+        <p>Completed or delivered assistance services are non-refundable. Refund requests or billing questions should be sent to <a href="mailto:<%= site.supportEmail %>"><%= site.supportEmail %></a>.</p>
+      </section>
+
+      <section class="legal-document-section">
+        <h2>Contact Information</h2>
+        <p><strong>Company:</strong> <%= site.businessName %></p>
+        <p><strong>Website:</strong> <a href="<%= site.baseUrl %>"><%= site.baseUrl.replace(/^https?:\/\//, '') %></a></p>
+        <p><strong>Email:</strong> <a href="mailto:<%= site.supportEmail %>"><%= site.supportEmail %></a></p>
+        <p><strong>Support Hours:</strong> <%= site.supportHours %></p>
+      </section>
+    </article>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

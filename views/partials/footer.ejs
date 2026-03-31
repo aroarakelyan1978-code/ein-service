@@ -1,0 +1,22 @@
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-simple">
+      <div class="footer-simple-mark" aria-hidden="true">
+        <img src="/icon-building.png" alt="" />
+      </div>
+      <p class="footer-simple-title">You can always reach us for any tax related needs.</p>
+      <nav class="footer-simple-links" aria-label="Footer">
+        <a href="/contact">Contact</a>
+        <a href="/services-pricing">Services &amp; Pricing</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms &amp; Conditions</a>
+        <a href="/track">Order Status</a>
+      </nav>
+      <p class="footer-simple-disclaimer"><%= site.businessName %> is a private third-party paid service that assists clients in obtaining Individual Taxpayer Identification Numbers from the IRS as a third-party designee. We are not affiliated with the IRS or any federal or state organization. Service fees apply to our assistance. We do not offer legal, financial, or professional advice, nor are we a law or accounting firm. You may apply directly with the IRS at no cost by visiting <a href="https://www.irs.gov" target="_blank" rel="noopener noreferrer">IRS.gov</a>, but that option does not include our assistance or simplified application process.</p>
+      <p class="footer-simple-copy">&copy; <%= year %> <%= site.businessName %>. All Rights Reserved.</p>
+    </div>
+  </footer>
+  <script id="itin-form-config" type="application/json"><%- JSON.stringify({ reasonOptions, documentOptions, initialDraft, feeDisplay: site.serviceFeeDisplay, disclosure: site.disclosure, resumeDraftId: draftMeta ? draftMeta.draftId : '' }) %></script>
+  <script src="/app.js" defer></script>
+</body>
+</html>

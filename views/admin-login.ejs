@@ -1,0 +1,28 @@
+<%- include('partials/header') %>
+
+<section class="subpage-hero">
+  <div class="container narrow">
+    <span class="section-kicker">Admin</span>
+    <h1>Admin login</h1>
+    <p>Internal dashboard for viewing ITIN assistance applications.</p>
+  </div>
+</section>
+
+<section class="container section-pad narrow">
+  <form class="card admin-login-form" method="post" action="/admin/login">
+    <% if (loginError) { %>
+      <div class="inline-alert inline-alert-error"><%= loginError %></div>
+    <% } %>
+    <label class="field-card">
+      <span>Email</span>
+      <input type="email" name="email" required />
+    </label>
+    <label class="field-card">
+      <span>Password</span>
+      <input type="password" name="password" required />
+    </label>
+    <button type="submit" class="button button-primary">Sign in</button>
+  </form>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,410 @@
+<section id="application-wizard" class="wizard-shell application-shell">
+  <form class="wizard-form application-card card" data-itin-form novalidate>
+    <input type="hidden" name="draftId" value="<%= draftMeta ? draftMeta.draftId : '' %>" />
+
+    <div class="application-header">
+      <h1>ITIN / Tax ID Application - W-7 Form</h1>
+    </div>
+
+    <div class="application-progress-card" aria-label="Application progress">
+      <div class="application-progress-bar">
+        <span data-progress-fill></span>
+      </div>
+      <div class="application-progress-meta">
+        <span data-progress-percent>0% Complete</span>
+        <span data-progress-count>1 of 4</span>
+      </div>
+    </div>
+
+    <% if (draftMeta) { %>
+      <div class="inline-alert">
+        Saved draft restored from <%= new Date(draftMeta.updatedAt).toLocaleString() %>.
+      </div>
+    <% } %>
+
+    <div class="wizard-status" data-save-status aria-live="polite"></div>
+
+    <section class="form-step is-active" data-step="0">
+      <div class="field-grid one-up application-step-form-intro">
+        <label class="field-card">
+          <span>Application Type*</span>
+          <select name="applicationType" data-required>
+            <option value="new">Apply for a New ITIN</option>
+            <option value="renewal">Renew an Existing ITIN</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="application-step-title">
+        <h2>Personal Information</h2>
+      </div>
+
+      <div class="field-grid two-up">
+        <label class="field-card">
+          <span>Email Address*</span>
+          <input type="email" name="contact.email" placeholder="name@example.com" data-required />
+        </label>
+        <label class="field-card">
+          <span>Phone Number*</span>
+          <input type="tel" name="contact.phone" placeholder="(555) 555-5555" data-required />
+        </label>
+      </div>
+
+      <div class="field-grid three-up">
+        <label class="field-card">
+          <span>First Name*</span>
+          <input type="text" name="personal.firstName" data-required />
+        </label>
+        <label class="field-card">
+          <span>Middle Name</span>
+          <input type="text" name="personal.middleName" />
+        </label>
+        <label class="field-card">
+          <span>Last Name*</span>
+          <input type="text" name="personal.lastName" data-required />
+        </label>
+      </div>
+
+      <div class="field-grid three-up">
+        <label class="field-card">
+          <span>Name at Birth - First</span>
+          <input type="text" name="personal.birthFirstName" />
+        </label>
+        <label class="field-card">
+          <span>Name at Birth - Middle</span>
+          <input type="text" name="personal.birthMiddleName" />
+        </label>
+        <label class="field-card">
+          <span>Name at Birth - Last</span>
+          <input type="text" name="personal.birthLastName" />
+        </label>
+      </div>
+
+      <div class="field-grid three-up">
+        <label class="field-card">
+          <span>Date of Birth*</span>
+          <input type="date" name="personal.dateOfBirth" data-required />
+        </label>
+        <label class="field-card">
+          <span>Gender*</span>
+          <select name="personal.gender" data-required>
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+        <label class="field-card">
+          <span>Country of Citizenship*</span>
+          <input type="text" name="personal.countryOfCitizenship" data-required />
+        </label>
+      </div>
+
+      <div class="field-grid two-up">
+        <label class="field-card">
+          <span>Country of Birth*</span>
+          <input type="text" name="personal.countryOfBirth" data-required />
+        </label>
+        <label class="field-card">
+          <span>City and State/Province of Birth</span>
+          <input type="text" name="personal.cityProvinceOfBirth" />
+        </label>
+      </div>
+    </section>
+
+    <section class="form-step" data-step="1">
+      <div class="application-step-title">
+        <h2>Foreign Status / Citizenship</h2>
+      </div>
+
+      <div class="field-grid two-up">
+        <label class="field-card">
+          <span>Foreign Tax I.D. Number</span>
+          <input type="text" name="foreignStatus.foreignTaxId" />
+        </label>
+        <label class="field-card">
+          <span>Date of Entry into the U.S.</span>
+          <input type="date" name="foreignStatus.dateOfEntryUs" />
+        </label>
+      </div>
+
+      <div class="field-grid three-up">
+        <label class="field-card">
+          <span>U.S. Visa Type</span>
+          <input type="text" name="foreignStatus.visaType" placeholder="Example: F-1" />
+        </label>
+        <label class="field-card">
+          <span>Visa Number</span>
+          <input type="text" name="foreignStatus.visaNumber" />
+        </label>
+        <label class="field-card">
+          <span>Visa Expiration Date</span>
+          <input type="date" name="foreignStatus.visaExpiry" />
+        </label>
+      </div>
+
+      <div class="field-grid four-up">
+        <label class="field-card">
+          <span>Identification Document Type*</span>
+          <select name="foreignStatus.identificationType" data-required>
+            <option value="">Select a document</option>
+            <% documentOptions.forEach(function(option) { %>
+              <option value="<%= option %>"><%= option %></option>
+            <% }) %>
+          </select>
+        </label>
+        <label class="field-card">
+          <span>Issued By*</span>
+          <input type="text" name="foreignStatus.identificationIssuer" data-required />
+        </label>
+        <label class="field-card">
+          <span>Document Number*</span>
+          <input type="text" name="foreignStatus.identificationNumber" data-required />
+        </label>
+        <label class="field-card">
+          <span>Expiration Date*</span>
+          <input type="date" name="foreignStatus.identificationExpiry" data-required />
+        </label>
+      </div>
+
+      <div class="field-grid three-up">
+        <label class="field-card">
+          <span>Previously Received an ITIN or IRSN?</span>
+          <select name="foreignStatus.previousItinReceived">
+            <option value="no">No / Do Not Know</option>
+            <option value="yes">Yes</option>
+            <option value="unknown">Not Sure</option>
+          </select>
+        </label>
+        <label class="field-card">
+          <span>Prior ITIN</span>
+          <input type="text" name="foreignStatus.priorItin" />
+        </label>
+        <label class="field-card">
+          <span>Prior IRSN</span>
+          <input type="text" name="foreignStatus.priorIrsn" />
+        </label>
+      </div>
+
+      <label class="field-card">
+        <span>Name Under Which Prior ITIN or IRSN Was Issued</span>
+        <input type="text" name="foreignStatus.priorIssuedName" />
+      </label>
+    </section>
+
+    <section class="form-step" data-step="2">
+      <div class="application-step-title">
+        <h2>Reason for ITIN</h2>
+      </div>
+
+      <div class="reason-grid">
+        <% reasonOptions.forEach(function(reason) { %>
+          <label class="reason-card">
+            <input type="radio" name="reason.code" value="<%= reason.code %>" />
+            <span class="reason-copy">
+              <strong><%= reason.code.toUpperCase() %>. <%= reason.label %></strong>
+              <small><%= reason.description %></small>
+            </span>
+          </label>
+        <% }) %>
+      </div>
+
+      <div class="field-grid two-up reason-dependent" data-reason-group="a,f">
+        <label class="field-card">
+          <span>Treaty Country</span>
+          <input type="text" name="reason.treatyCountry" />
+        </label>
+        <label class="field-card">
+          <span>Treaty Article Number</span>
+          <input type="text" name="reason.treatyArticle" />
+        </label>
+      </div>
+
+      <div class="field-grid three-up reason-dependent" data-reason-group="f">
+        <label class="field-card">
+          <span>College, University, or Company</span>
+          <input type="text" name="reason.collegeOrCompanyName" />
+        </label>
+        <label class="field-card">
+          <span>City and State</span>
+          <input type="text" name="reason.collegeOrCompanyCityState" />
+        </label>
+        <label class="field-card">
+          <span>Length of Stay</span>
+          <input type="text" name="reason.lengthOfStay" placeholder="Example: 24 months" />
+        </label>
+      </div>
+
+      <div class="field-grid three-up reason-dependent" data-reason-group="d,e">
+        <label class="field-card">
+          <span>Relationship to U.S. Citizen/Resident Alien</span>
+          <input type="text" name="reason.relationshipToCitizen" />
+        </label>
+        <label class="field-card">
+          <span>Name of U.S. Citizen/Resident Alien</span>
+          <input type="text" name="reason.sponsorName" />
+        </label>
+        <label class="field-card">
+          <span>SSN or ITIN of U.S. Citizen/Resident Alien</span>
+          <input type="text" name="reason.sponsorTin" />
+        </label>
+      </div>
+
+      <div class="field-grid two-up reason-dependent" data-reason-group="g">
+        <label class="field-card">
+          <span>Name of Nonresident Alien Visa Holder</span>
+          <input type="text" name="reason.visaHolderName" />
+        </label>
+        <label class="field-card">
+          <span>Relationship to Visa Holder</span>
+          <input type="text" name="reason.visaHolderRelationship" />
+        </label>
+      </div>
+
+      <label class="field-card reason-dependent" data-reason-group="h">
+        <span>Describe the Other IRS-Approved Reason</span>
+        <textarea name="reason.otherDescription" rows="4"></textarea>
+      </label>
+    </section>
+
+    <section class="form-step" data-step="3">
+      <div class="application-step-title">
+        <h2>Address and Supporting Documents</h2>
+      </div>
+
+      <fieldset class="application-fieldset">
+        <legend>Mailing Address</legend>
+        <div class="field-grid two-up">
+          <label class="field-card">
+            <span>Address Line 1*</span>
+            <input type="text" name="mailingAddress.line1" data-required />
+          </label>
+          <label class="field-card">
+            <span>Address Line 2</span>
+            <input type="text" name="mailingAddress.line2" />
+          </label>
+          <label class="field-card">
+            <span>City*</span>
+            <input type="text" name="mailingAddress.city" data-required />
+          </label>
+          <label class="field-card">
+            <span>State or Province*</span>
+            <input type="text" name="mailingAddress.stateProvince" data-required />
+          </label>
+          <label class="field-card">
+            <span>Postal Code*</span>
+            <input type="text" name="mailingAddress.postalCode" data-required />
+          </label>
+          <label class="field-card">
+            <span>Country*</span>
+            <input type="text" name="mailingAddress.country" data-required />
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="application-fieldset">
+        <legend>Foreign Address</legend>
+        <div class="field-grid two-up">
+          <label class="field-card">
+            <span>Address Line 1*</span>
+            <input type="text" name="foreignAddress.line1" data-required />
+          </label>
+          <label class="field-card">
+            <span>Address Line 2</span>
+            <input type="text" name="foreignAddress.line2" />
+          </label>
+          <label class="field-card">
+            <span>City*</span>
+            <input type="text" name="foreignAddress.city" data-required />
+          </label>
+          <label class="field-card">
+            <span>State or Province*</span>
+            <input type="text" name="foreignAddress.stateProvince" data-required />
+          </label>
+          <label class="field-card">
+            <span>Postal Code*</span>
+            <input type="text" name="foreignAddress.postalCode" data-required />
+          </label>
+          <label class="field-card">
+            <span>Country*</span>
+            <input type="text" name="foreignAddress.country" data-required />
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="application-fieldset">
+        <legend>Supporting Documents Checklist</legend>
+        <div class="document-grid">
+          <% documentOptions.forEach(function(option) { %>
+            <label class="check-card">
+              <input type="checkbox" name="supportingDocuments.selected" value="<%= option %>" />
+              <span><%= option %></span>
+            </label>
+          <% }) %>
+        </div>
+
+        <div class="field-grid two-up">
+          <label class="check-inline">
+            <input type="checkbox" name="supportingDocuments.taxReturnIncluded" />
+            <span>I plan to include the required federal tax return with Form W-7, unless an IRS exception applies.</span>
+          </label>
+          <label class="check-inline">
+            <input type="checkbox" name="supportingDocuments.exceptionClaimed" />
+            <span>I believe an IRS exception to the return requirement may apply.</span>
+          </label>
+          <label class="check-inline">
+            <input type="checkbox" name="supportingDocuments.needsResidencyProof" />
+            <span>I understand some dependent applications also require proof of U.S. residency.</span>
+          </label>
+          <label class="check-inline">
+            <input type="checkbox" name="acknowledgements.consentContact" />
+            <span>I consent to be contacted about my request and document follow-up.</span>
+          </label>
+        </div>
+
+        <label class="field-card">
+          <span>Document Notes or Questions</span>
+          <textarea name="supportingDocuments.documentNotes" rows="4" placeholder="List missing documents, translation needs, or packet questions."></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset class="application-fieldset">
+        <legend>Before You Submit</legend>
+        <div class="review-card">
+          <ul>
+            <li><%= site.disclosure %></li>
+            <li>IRS does not charge for issuing an ITIN. Our fee is for preparation and assistance services.</li>
+            <li>Issuance decisions are made by the IRS after application review.</li>
+          </ul>
+          <div class="field-grid one-up">
+            <label class="check-inline">
+              <input type="checkbox" name="acknowledgements.privateService" />
+              <span>I understand this is a private assistance service and not the IRS.</span>
+            </label>
+            <label class="check-inline">
+              <input type="checkbox" name="acknowledgements.irsFeeNotice" />
+              <span>I understand the service fee covers preparation and guided assistance, not the ITIN itself.</span>
+            </label>
+            <label class="check-inline">
+              <input type="checkbox" name="acknowledgements.accuracy" />
+              <span>I confirm the information above is true and complete to the best of my knowledge.</span>
+            </label>
+          </div>
+          <label class="field-card">
+            <span>Electronic Signature*</span>
+            <input type="text" name="acknowledgements.eSignatureName" placeholder="Type full legal name" data-required />
+          </label>
+        </div>
+      </fieldset>
+    </section>
+
+    <div class="form-actions application-form-actions">
+      <button type="button" class="button button-secondary is-hidden" data-prev-step>Back</button>
+      <div class="action-group">
+        <button type="button" class="button button-primary" data-next-step>Next</button>
+        <button type="submit" class="button button-primary is-hidden" data-submit-form>Submit</button>
+        <button type="button" class="button button-secondary" data-save-draft>Save</button>
+      </div>
+    </div>
+  </form>
+</section>

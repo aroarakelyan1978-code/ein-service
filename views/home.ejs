@@ -1,0 +1,121 @@
+<%
+  const ctaOptions = [
+    { value: 'new', label: 'Apply for a New ITIN' },
+    { value: 'renewal', label: 'Renew an Existing ITIN' },
+  ];
+  const pricingItems = [
+    {
+      title: 'New ITIN Application Assistance',
+      body: 'Guided help for first-time ITIN applicants who need Form W-7 preparation support, document checklist guidance, and internal order tracking.',
+    },
+    {
+      title: 'ITIN Renewal Assistance',
+      body: 'Support for renewing an existing ITIN when a prior number has expired or needs to be reactivated for filing purposes.',
+    },
+    {
+      title: 'Spouse ITIN Assistance',
+      body: 'Private preparation support for spouses listed on a U.S. federal tax return who are not eligible for a Social Security number.',
+    },
+    {
+      title: 'Dependent ITIN Assistance',
+      body: 'Guided application help for qualifying dependents who need an ITIN for tax filing or related IRS processing purposes.',
+    },
+    {
+      title: 'Resident Alien Filing Support',
+      body: 'Assistance for resident aliens who need an ITIN to complete a U.S. federal tax filing and are not eligible for an SSN.',
+    },
+    {
+      title: 'Nonresident Alien Filing Support',
+      body: 'Preparation support for nonresident applicants who require an ITIN for U.S. federal return filing or related tax reporting.',
+    },
+    {
+      title: 'Tax Treaty Benefit Cases',
+      body: 'Help reviewing treaty-related details when an applicant needs an ITIN to claim a tax treaty benefit and complete the related W-7 reason.',
+    },
+    {
+      title: 'Student / Professor / Researcher Cases',
+      body: 'Guided support for applicants filing under the student, professor, or researcher categories described in the Form W-7 instructions.',
+    },
+    {
+      title: 'Form W-7 Review Service',
+      body: 'A structured review of the information provided for completeness, common issues, and packet readiness before submission steps.',
+    },
+    {
+      title: 'Document Checklist Guidance',
+      body: 'Help identifying the documents typically needed to establish identity and foreign status for an ITIN application packet.',
+    },
+  ];
+%>
+<%- include('partials/header') %>
+
+<section class="landing-simple">
+  <div class="container landing-simple-shell">
+    <section class="landing-simple-intro">
+      <h1>ITIN Number | Individual Taxpayer Identification Services</h1>
+      <p>Apply for Individual Taxpayer Identification Number | Apply for ITIN</p>
+    </section>
+
+    <section class="landing-simple-box landing-simple-apply">
+      <h2>APPLY FOR ITIN - W-7 HELP</h2>
+      <div class="landing-simple-apply-row">
+        <p>Get guided help with your Individual Taxpayer Identification Number application through our secure and simple step-by-step preparation process.</p>
+        <a class="landing-flat-button" href="/apply">APPLY FOR ITIN</a>
+      </div>
+    </section>
+
+    <section class="landing-services-layout">
+      <div class="landing-simple-box landing-services-box">
+        <h2>ITIN Assistance - Services</h2>
+        <ul class="landing-service-list">
+          <li><a href="/apply">New ITIN Application Assistance</a></li>
+          <li><a href="/apply">ITIN Renewal Assistance</a></li>
+          <li><a href="/apply">Form W-7 Preparation Review</a></li>
+          <li><a href="/track">Track Existing Application</a></li>
+          <li><a href="#pricing">Service Pricing &amp; Fee Disclosure</a></li>
+        </ul>
+      </div>
+      <div class="landing-service-mark" aria-hidden="true">
+        <img src="/icon-building.png" alt="" />
+      </div>
+    </section>
+
+    <section class="landing-section-block landing-type-section" id="pricing">
+      <h2>Common ITIN Application Types</h2>
+      <div class="landing-type-list">
+        <% pricingItems.forEach(function(item) { %>
+          <details class="landing-type-row">
+            <summary>
+              <span><%= item.title %></span>
+              <strong>?</strong>
+            </summary>
+            <p><%= item.body %></p>
+          </details>
+        <% }) %>
+      </div>
+    </section>
+
+    <section class="landing-final-cta">
+      <h2>Ready to apply for ITIN?</h2>
+      <div class="landing-final-card">
+        <h3>ITIN | Individual Taxpayer Identification Number</h3>
+        <p>Get guided help with your Individual Taxpayer Identification Number (ITIN) application online today.</p>
+        <form class="landing-final-form" action="/apply" method="get">
+          <select class="landing-final-select" name="type" aria-label="Select application type" required>
+            <option value="" selected disabled>Select Application Type</option>
+            <% ctaOptions.forEach(function(option) { %>
+              <option value="<%= option.value %>"><%= option.label %></option>
+            <% }) %>
+          </select>
+          <button class="landing-flat-button landing-final-button" type="submit">APPLY NOW</button>
+        </form>
+      </div>
+      <div class="landing-final-mark" aria-hidden="true">
+        <img src="/icon-building.png" alt="" />
+      </div>
+      <p class="landing-final-support">Representatives are available Monday through Friday from 9 AM – 5 PM PST.</p>
+      <p class="landing-final-contact">E-mail us at <a href="mailto:<%= site.supportEmail %>"><%= site.supportEmail %></a> or visit <a href="/contact">Contact Us page</a>.</p>
+    </section>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
