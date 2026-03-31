@@ -1,49 +1,56 @@
 <%- include('partials/header') %>
 
-<section class="subpage-hero">
-  <div class="container">
-    <span class="section-kicker">Admin dashboard</span>
-    <h1>Applications</h1>
-    <p>Signed in as <strong><%= adminEmail %></strong></p>
-    <form method="post" action="/admin/logout">
-      <button class="button button-secondary" type="submit">Log out</button>
-    </form>
-  </div>
-</section>
+<section class="landing-simple admin-flat-page">
+  <div class="container landing-simple-shell admin-flat-shell">
+    <section class="landing-simple-intro admin-flat-intro">
+      <h1>ITIN Admin | Applications</h1>
+      <p>Signed in as <strong><%= adminEmail %></strong></p>
+    </section>
 
-<section class="container section-pad">
-  <div class="card table-card">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Tracking Code</th>
-            <th>Applicant</th>
-            <th>Status</th>
-            <th>Reason</th>
-            <th>Submitted</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% if (!applications.length) { %>
+    <section class="landing-simple-box admin-flat-box admin-toolbar-box">
+      <h2>APPLICATION MANAGEMENT</h2>
+      <div class="admin-toolbar-row">
+        <p>Review submitted cases, open detailed records, and update application status from one internal dashboard.</p>
+        <form method="post" action="/admin/logout">
+          <button class="landing-flat-button admin-flat-secondary" type="submit">LOG OUT</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="landing-simple-box admin-flat-box admin-table-box">
+      <h2>SUBMITTED APPLICATIONS</h2>
+      <div class="table-wrap admin-flat-table-wrap">
+        <table class="admin-flat-table">
+          <thead>
             <tr>
-              <td colspan="6">No applications yet.</td>
+              <th>Tracking Code</th>
+              <th>Applicant</th>
+              <th>Status</th>
+              <th>Reason</th>
+              <th>Submitted</th>
+              <th>Open</th>
             </tr>
-          <% } %>
-          <% applications.forEach(function(application) { %>
-            <tr>
-              <td><%= application.trackingCode %></td>
-              <td><%= application.personal.firstName %> <%= application.personal.lastName %></td>
-              <td><span class="status-chip"><%= application.status %></span></td>
-              <td><%= application.reason.label %></td>
-              <td><%= new Date(application.createdAt).toLocaleString() %></td>
-              <td><a href="/admin/applications/<%= application.id %>">Open</a></td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            <% if (!applications.length) { %>
+              <tr>
+                <td colspan="6">No applications yet.</td>
+              </tr>
+            <% } %>
+            <% applications.forEach(function(application) { %>
+              <tr>
+                <td><%= application.trackingCode %></td>
+                <td><%= application.personal.firstName %> <%= application.personal.lastName %></td>
+                <td><span class="admin-flat-status"><%= application.status %></span></td>
+                <td><%= application.reason.label %></td>
+                <td><%= new Date(application.createdAt).toLocaleString() %></td>
+                <td><a class="admin-flat-link" href="/admin/applications/<%= application.id %>">OPEN</a></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 </section>
 

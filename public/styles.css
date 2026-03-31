@@ -2000,6 +2000,215 @@ th {
   text-decoration: underline;
 }
 
+.admin-flat-page {
+  background: #f7f8fb;
+  padding: 24px 0 56px;
+}
+
+.admin-flat-shell {
+  display: grid;
+  gap: 22px;
+}
+
+.admin-flat-intro {
+  text-align: center;
+  padding-bottom: 6px;
+}
+
+.admin-flat-intro h1 {
+  margin-bottom: 10px;
+}
+
+.admin-flat-intro p {
+  margin: 0;
+}
+
+.admin-flat-box {
+  border: 1px solid #6f7886;
+  border-radius: 0;
+  box-shadow: none;
+  background: #ffffff;
+}
+
+.admin-flat-box h2 {
+  margin-bottom: 18px;
+  text-align: center;
+  font-size: clamp(1.55rem, 2.5vw, 2.25rem);
+}
+
+.admin-login-box,
+.admin-table-box {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.admin-login-box {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-login-box > p {
+  margin: 0;
+  text-align: center;
+  color: #425064;
+  line-height: 1.7;
+}
+
+.admin-flat-form {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-flat-field {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-flat-field span {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #1d2a3e;
+}
+
+.admin-flat-field input,
+.admin-flat-field select {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 14px;
+  border: 1px solid #6f7886;
+  border-radius: 0;
+  background: #ffffff;
+  color: #1d2a3e;
+  font: inherit;
+}
+
+.admin-flat-field input:focus,
+.admin-flat-field select:focus {
+  outline: none;
+  border-color: #3f6faa;
+  box-shadow: 0 0 0 3px rgba(63, 111, 170, 0.12);
+}
+
+.admin-flat-action-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-toolbar-box {
+  display: grid;
+  gap: 20px;
+}
+
+.admin-toolbar-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+}
+
+.admin-toolbar-row p {
+  margin: 0;
+  color: #425064;
+  line-height: 1.7;
+}
+
+.admin-flat-secondary {
+  background: #ffffff;
+  color: #3f6faa;
+  border: 1px solid #6f7886;
+}
+
+.admin-flat-secondary:hover {
+  background: #f6f8fb;
+}
+
+.admin-flat-table-wrap {
+  border-top: 1px solid #c8d0da;
+}
+
+.admin-flat-table th,
+.admin-flat-table td {
+  border-bottom: 1px solid #c8d0da;
+  white-space: normal;
+}
+
+.admin-flat-table th {
+  color: #4f5c6d;
+}
+
+.admin-flat-status {
+  display: inline-flex;
+  padding: 8px 12px;
+  border: 1px solid #9bb3d1;
+  background: #f4f8fd;
+  color: #1f4f8f;
+  font-weight: 700;
+}
+
+.admin-flat-link {
+  color: #3f6faa;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.admin-flat-link:hover {
+  text-decoration: underline;
+}
+
+.admin-flat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.admin-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.admin-summary-item {
+  padding: 16px 18px;
+  border: 1px solid #c8d0da;
+  background: #ffffff;
+}
+
+.admin-summary-item span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.86rem;
+  color: #5d6776;
+}
+
+.admin-summary-item strong {
+  color: #1d2a3e;
+}
+
+.admin-flat-detail-list {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-flat-detail-list div {
+  display: grid;
+  gap: 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #c8d0da;
+}
+
+.admin-flat-detail-list dt {
+  font-size: 0.84rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5d6776;
+}
+
+.admin-flat-detail-list dd {
+  margin: 0;
+  color: #1d2a3e;
+  line-height: 1.6;
+}
+
 @media (max-width: 1040px) {
   .hero-grid,
   .wizard-layout,
@@ -2007,6 +2216,8 @@ th {
   .steps-grid,
   .testimonial-grid,
   .admin-detail-grid,
+  .admin-flat-grid,
+  .admin-summary-grid,
   .pricing-card,
   .cta-card {
     grid-template-columns: 1fr;
@@ -2115,6 +2326,11 @@ th {
     width: 100%;
   }
 
+  .admin-toolbar-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .track-simple-action-row,
   .track-simple-result-head {
     flex-direction: column;
@@ -2167,6 +2383,15 @@ th {
   .contact-name-grid,
   .contact-info-grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-flat-action-row {
+    justify-content: stretch;
+  }
+
+  .admin-flat-action-row .landing-flat-button,
+  .admin-toolbar-row .landing-flat-button {
+    width: 100%;
   }
 
   .application-form-actions,
