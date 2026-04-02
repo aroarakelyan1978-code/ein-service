@@ -273,7 +273,12 @@
 
   const stepRules = [
     [
+      'itinProfile',
+    ],
+    [
       'applicationType',
+    ],
+    [
       'contact.email',
       'contact.phone',
       'personal.firstName',
@@ -364,7 +369,8 @@
   function collectPayload() {
     return {
       draftId,
-      applicationType: getValue('applicationType') || 'new',
+      itinProfile: getValue('itinProfile'),
+      applicationType: getValue('applicationType'),
       personal: {
         firstName: getValue('personal.firstName'),
         middleName: getValue('personal.middleName'),
@@ -450,6 +456,7 @@
 
     const assignments = [
       'applicationType',
+      'itinProfile',
       'contact.email',
       'contact.phone',
       'personal.firstName',
@@ -529,6 +536,7 @@
     return [
       payload.personal.firstName,
       payload.personal.lastName,
+      payload.itinProfile,
       payload.contact.email,
       payload.contact.phone,
       payload.reason.code,
@@ -544,7 +552,7 @@
   function markInvalid(name) {
     const nodes = getNodes(name);
     nodes.forEach((node) => {
-      const card = node.closest('.field-card, .reason-card, .check-card, .check-inline');
+      const card = node.closest('.field-card, .reason-card, .check-card, .check-inline, .application-type-choice');
       if (card) {
         card.classList.add('is-invalid');
       }
@@ -585,7 +593,7 @@
     const payload = collectPayload();
     const names = new Set(stepRules[index] || []);
 
-    if (index === 1) {
+    if (index === 3) {
       conditionalFields(payload).forEach((name) => {
         names.add(name);
       });

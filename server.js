@@ -228,7 +228,8 @@ function getServiceRequestOption(value) {
 }
 
 function sanitizeApplicationPayload(raw = {}) {
-  const applicationType = raw.applicationType === 'renewal' ? 'renewal' : 'new';
+  const applicationType = raw.applicationType === 'renewal' ? 'renewal' : raw.applicationType === 'new' ? 'new' : '';
+  const itinProfile = normalizeText(raw.itinProfile);
   const identificationType = normalizeText(raw.foreignStatus?.identificationType);
   const acknowledgementInput = raw.acknowledgements && typeof raw.acknowledgements === 'object' ? raw.acknowledgements : {};
   const applicantFullName = buildFullName(raw.personal?.firstName, raw.personal?.middleName, raw.personal?.lastName);
@@ -267,6 +268,7 @@ function sanitizeApplicationPayload(raw = {}) {
 
   return {
     draftId: normalizeText(raw.draftId),
+    itinProfile,
     applicationType,
     personal: {
       firstName: normalizeText(raw.personal?.firstName),
@@ -339,6 +341,8 @@ function validateApplication(application) {
   const reason = getReasonByCode(application.reason.code);
 
   [
+    ['itinProfile', application.itinProfile, 'Please select the ITIN type.'],
+    ['applicationType', application.applicationType, 'Please choose whether this is a new or renewal ITIN request.'],
     ['personal.firstName', application.personal.firstName, 'First name is required.'],
     ['personal.lastName', application.personal.lastName, 'Last name is required.'],
     ['personal.dateOfBirth', application.personal.dateOfBirth, 'Date of birth is required.'],
@@ -420,7 +424,7 @@ app.get('/', (req, res) => {
 
 app.get('/apply', (req, res) => {
   const savedDraft = req.query.draft ? getDraft(String(req.query.draft)) : null;
-  const presetType = req.query.type === 'renewal' ? 'renewal' : 'new';
+  const presetType = req.query.type === 'renewal' ? 'renewal' : req.query.type === 'new' ? 'new' : '';
 
   res.render(
     'apply',
@@ -430,7 +434,7 @@ app.get('/apply', (req, res) => {
       metaDescription:
         'Begin your private ITIN assistance application with a secure multi-step intake and clear compliance disclosures.',
       canonical: `${site.baseUrl}/apply`,
-      initialDraft: savedDraft ? savedDraft.payload : { applicationType: presetType },
+      initialDraft: savedDraft ? savedDraft.payload : (presetType ? { applicationType: presetType } : null),
       wizardMode: 'standalone',
       draftMeta: savedDraft,
     })

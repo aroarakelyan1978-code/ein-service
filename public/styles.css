@@ -1430,13 +1430,15 @@ th {
   background:
     linear-gradient(
       90deg,
-      #eceff3 0 24.5%,
-      #dfe4ea 24.5% 25.5%,
-      #eceff3 25.5% 49.5%,
-      #dfe4ea 49.5% 50.5%,
-      #eceff3 50.5% 74.5%,
-      #dfe4ea 74.5% 75.5%,
-      #eceff3 75.5% 100%
+      #eceff3 0 19.4%,
+      #dfe4ea 19.4% 20.6%,
+      #eceff3 20.6% 39.4%,
+      #dfe4ea 39.4% 40.6%,
+      #eceff3 40.6% 59.4%,
+      #dfe4ea 59.4% 60.6%,
+      #eceff3 60.6% 79.4%,
+      #dfe4ea 79.4% 80.6%,
+      #eceff3 80.6% 100%
     );
   overflow: hidden;
 }
@@ -1471,6 +1473,10 @@ th {
 
 .application-step-form-intro {
   margin-bottom: 10px;
+}
+
+.application-start-grid {
+  margin-top: 4px;
 }
 
 .application-step-title {
@@ -1537,6 +1543,57 @@ th {
 .application-card .field-card.is-invalid input,
 .application-card .field-card.is-invalid select,
 .application-card .field-card.is-invalid textarea {
+  border-color: #c0392b;
+}
+
+.application-type-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.application-type-choice {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #d8dde4;
+  border-radius: 4px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+}
+
+.application-type-choice input {
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  min-height: 18px;
+  margin-top: 3px;
+  padding: 0;
+}
+
+.application-type-choice span {
+  display: grid;
+  gap: 5px;
+}
+
+.application-type-choice strong {
+  font-size: 1rem;
+  color: #111827;
+}
+
+.application-type-choice small {
+  color: #6b7280;
+  line-height: 1.55;
+}
+
+.application-type-choice:has(input:checked) {
+  border-color: #3868f0;
+  background: #f7faff;
+  box-shadow: 0 0 0 2px rgba(56, 104, 240, 0.1);
+}
+
+.application-type-choice.is-invalid {
   border-color: #c0392b;
 }
 
@@ -2424,6 +2481,42 @@ th {
   .landing-simple-apply-row,
   .landing-final-form {
     gap: 10px;
+  }
+
+  .application-card {
+    padding: 12px 12px 18px;
+  }
+
+  .application-progress-card {
+    padding: 12px 12px 8px;
+  }
+
+  .application-card .field-grid {
+    gap: 12px;
+  }
+
+  .application-type-choice-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .application-type-choice {
+    padding: 14px;
+  }
+
+  .application-form-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .application-form-actions .action-group {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .application-form-actions .button {
+    width: 100%;
   }
 
   .landing-simple-apply-row .landing-flat-button,

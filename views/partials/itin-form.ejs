@@ -1,3 +1,12 @@
+<%
+  const itinProfileOptions = [
+    { value: 'individual', label: 'Individual Applicant' },
+    { value: 'spouse', label: 'Spouse Applicant' },
+    { value: 'dependent', label: 'Dependent Applicant' },
+    { value: 'student-researcher', label: 'Student / Professor / Researcher' },
+    { value: 'treaty-other', label: 'Tax Treaty / Other Case' },
+  ];
+%>
 <section id="application-wizard" class="wizard-shell application-shell">
   <form class="wizard-form application-card card" data-itin-form novalidate>
     <input type="hidden" name="draftId" value="<%= draftMeta ? draftMeta.draftId : '' %>" />
@@ -12,7 +21,7 @@
       </div>
       <div class="application-progress-meta">
         <span data-progress-percent>0% Complete</span>
-        <span data-progress-count>1 of 3</span>
+        <span data-progress-count>1 of 5</span>
       </div>
     </div>
 
@@ -26,21 +35,48 @@
 
     <section class="form-step is-active" data-step="0">
       <div class="application-step-title">
-        <h2>Applicant Information</h2>
+        <h2>ITIN Type</h2>
       </div>
 
-      <div class="field-grid one-up application-step-form-intro">
+      <div class="field-grid one-up application-start-grid">
         <label class="field-card">
-          <span>Application Type*</span>
-          <select name="applicationType" data-required>
-            <option value="new">Apply for a New ITIN</option>
-            <option value="renewal">Renew an Existing ITIN</option>
+          <span>ITIN Type*</span>
+          <select name="itinProfile" data-required>
+            <option value="">Select Type</option>
+            <% itinProfileOptions.forEach(function(option) { %>
+              <option value="<%= option.value %>"><%= option.label %></option>
+            <% }) %>
           </select>
         </label>
       </div>
+    </section>
 
+    <section class="form-step" data-step="1">
       <div class="application-step-title">
-        <h2>Personal Information</h2>
+        <h2>Application Type</h2>
+      </div>
+
+      <div class="application-type-choice-grid">
+        <label class="application-type-choice">
+          <input type="radio" name="applicationType" value="new" />
+          <span>
+            <strong>Apply for a New ITIN</strong>
+            <small>Use this option when the applicant has never received an ITIN.</small>
+          </span>
+        </label>
+        <label class="application-type-choice">
+          <input type="radio" name="applicationType" value="renewal" />
+          <span>
+            <strong>Renew an Existing ITIN</strong>
+            <small>Use this option when the applicant needs to renew or reactivate a prior ITIN.</small>
+          </span>
+        </label>
+      </div>
+    </section>
+
+    <section class="form-step" data-step="2">
+      <div class="application-step-title">
+        <h2>Applicant Information</h2>
       </div>
 
       <div class="field-grid two-up">
@@ -97,7 +133,7 @@
       </div>
     </section>
 
-    <section class="form-step" data-step="1">
+    <section class="form-step" data-step="3">
       <div class="application-step-title">
         <h2>ITIN Request Details</h2>
       </div>
@@ -170,7 +206,7 @@
       </label>
     </section>
 
-    <section class="form-step" data-step="2">
+    <section class="form-step" data-step="4">
       <div class="application-step-title">
         <h2>Address and Confirmation</h2>
       </div>
