@@ -6,42 +6,52 @@
   const pricingItems = [
     {
       title: 'New ITIN Application Assistance',
+      service: 'new-itin-application-assistance',
       body: 'Guided help for first-time ITIN applicants who need Form W-7 preparation support, document checklist guidance, and internal order tracking.',
     },
     {
       title: 'ITIN Renewal Assistance',
+      service: 'itin-renewal-assistance',
       body: 'Support for renewing an existing ITIN when a prior number has expired or needs to be reactivated for filing purposes.',
     },
     {
       title: 'Spouse ITIN Assistance',
+      service: 'new-itin-application-assistance',
       body: 'Private preparation support for spouses listed on a U.S. federal tax return who are not eligible for a Social Security number.',
     },
     {
       title: 'Dependent ITIN Assistance',
+      service: 'new-itin-application-assistance',
       body: 'Guided application help for qualifying dependents who need an ITIN for tax filing or related IRS processing purposes.',
     },
     {
       title: 'Resident Alien Filing Support',
+      service: 'form-w7-preparation-review',
       body: 'Assistance for resident aliens who need an ITIN to complete a U.S. federal tax filing and are not eligible for an SSN.',
     },
     {
       title: 'Nonresident Alien Filing Support',
+      service: 'form-w7-preparation-review',
       body: 'Preparation support for nonresident applicants who require an ITIN for U.S. federal return filing or related tax reporting.',
     },
     {
       title: 'Tax Treaty Benefit Cases',
+      service: 'form-w7-preparation-review',
       body: 'Help reviewing treaty-related details when an applicant needs an ITIN to claim a tax treaty benefit and complete the related W-7 reason.',
     },
     {
       title: 'Student / Professor / Researcher Cases',
+      service: 'form-w7-preparation-review',
       body: 'Guided support for applicants filing under the student, professor, or researcher categories described in the Form W-7 instructions.',
     },
     {
       title: 'Form W-7 Review Service',
+      service: 'form-w7-preparation-review',
       body: 'A structured review of the information provided for completeness, common issues, and packet readiness before submission steps.',
     },
     {
       title: 'Document Checklist Guidance',
+      service: 'document-checklist-guidance',
       body: 'Help identifying the documents typically needed to establish identity and foreign status for an ITIN application packet.',
     },
   ];
@@ -66,6 +76,7 @@
     <section class="landing-services-layout">
       <div class="landing-simple-box landing-services-box">
         <h2>ITIN Assistance - Services</h2>
+        <p class="landing-services-intro">Select a service below to open a short request form. When it is submitted, our team receives it by email.</p>
         <ul class="landing-service-list">
           <li><a href="/service-request?service=new-itin-application-assistance">New ITIN Application Assistance</a></li>
           <li><a href="/service-request?service=itin-renewal-assistance">ITIN Renewal Assistance</a></li>
@@ -88,7 +99,10 @@
               <span><%= item.title %></span>
               <strong>?</strong>
             </summary>
-            <p><%= item.body %></p>
+            <div class="landing-type-body">
+              <p><%= item.body %></p>
+              <a class="landing-flat-button landing-type-button" href="/service-request?service=<%= item.service %>">REQUEST THIS SERVICE</a>
+            </div>
           </details>
         <% }) %>
       </div>

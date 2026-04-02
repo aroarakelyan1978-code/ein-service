@@ -27,7 +27,7 @@
 
       <section class="form-step is-active" data-step="0">
         <div class="application-step-title">
-          <h2>Service Request</h2>
+          <h2>ITIN Service Request</h2>
         </div>
 
         <div class="service-request-list">
@@ -43,14 +43,8 @@
             </label>
           <% }) %>
         </div>
-      </section>
 
-      <section class="form-step" data-step="1">
-        <div class="application-step-title">
-          <h2>Applicant Information</h2>
-        </div>
-
-        <div class="field-grid two-up">
+        <div class="field-grid two-up service-request-first-grid">
           <label class="field-card">
             <span>First Name*</span>
             <input type="text" name="firstName" value="<%= serviceRequestForm.firstName || '' %>" />
@@ -71,12 +65,6 @@
             <input type="tel" name="phone" value="<%= serviceRequestForm.phone || '' %>" />
           </label>
         </div>
-      </section>
-
-      <section class="form-step" data-step="2">
-        <div class="application-step-title">
-          <h2>Additional Details</h2>
-        </div>
 
         <div class="field-grid one-up">
           <label class="field-card">
@@ -84,13 +72,31 @@
             <input type="text" name="referenceNumber" value="<%= serviceRequestForm.referenceNumber || '' %>" placeholder="Optional" />
           </label>
         </div>
+      </section>
+
+      <section class="form-step" data-step="1">
+        <div class="application-step-title">
+          <h2>Request Details</h2>
+        </div>
+
+        <p class="application-helper-copy service-request-helper-copy">Share a little context so we know what follow-up or review support you need.</p>
 
         <label class="field-card">
           <span>How can we help?</span>
-          <textarea name="message" rows="5" placeholder="Share any details about the service request."><%= serviceRequestForm.message || '' %></textarea>
+          <textarea name="message" rows="6" placeholder="Share any details about the service request."><%= serviceRequestForm.message || '' %></textarea>
         </label>
+      </section>
+
+      <section class="form-step" data-step="2">
+        <div class="application-step-title">
+          <h2>Disclosure and Submit</h2>
+        </div>
 
         <div class="review-card service-request-review">
+          <ul>
+            <li><%= site.disclosure %></li>
+            <li>Your request is reviewed by our private support team and sent to <%= site.supportEmail %>.</li>
+          </ul>
           <label class="check-inline">
             <input type="checkbox" name="privateService" <%= serviceRequestForm.privateService ? 'checked' : '' %> />
             <span>I understand this is a private assistance service and not the IRS.</span>

@@ -1259,6 +1259,10 @@ th {
   gap: 10px;
 }
 
+.service-request-first-grid {
+  margin-top: 18px;
+}
+
 .service-request-option {
   display: flex;
   align-items: flex-start;
@@ -1289,6 +1293,10 @@ th {
 
 .service-request-option span {
   line-height: 1.5;
+}
+
+.service-request-helper-copy {
+  margin-bottom: 14px;
 }
 
 .service-request-review {
@@ -1798,6 +1806,12 @@ th {
   margin-bottom: 24px;
 }
 
+.landing-services-intro {
+  margin: 0 0 20px;
+  text-align: center;
+  color: #4a5565;
+}
+
 .landing-service-list {
   list-style: none;
   padding: 0;
@@ -1970,6 +1984,21 @@ th {
   padding: 0 16px 18px;
   color: #4a5565;
   line-height: 1.7;
+}
+
+.landing-type-body {
+  padding: 0 16px 18px;
+  display: grid;
+  gap: 14px;
+}
+
+.landing-type-body p {
+  padding: 0;
+}
+
+.landing-type-button {
+  width: fit-content;
+  min-width: 186px;
 }
 
 .landing-final-cta {
@@ -2423,8 +2452,17 @@ th {
   }
 
   .landing-type-row p {
-    padding: 0 14px 14px;
+    padding: 0;
     line-height: 1.6;
+  }
+
+  .landing-type-body {
+    padding: 0 14px 14px;
+    gap: 12px;
+  }
+
+  .landing-type-button {
+    width: 100%;
   }
 
   .landing-service-mark img {

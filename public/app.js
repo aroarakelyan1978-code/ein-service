@@ -140,8 +140,8 @@
     let currentStep = 0;
 
     const stepRules = [
-      ['serviceType'],
-      ['firstName', 'lastName', 'email', 'phone'],
+      ['serviceType', 'firstName', 'lastName', 'email', 'phone'],
+      [],
       ['privateService'],
     ];
 
