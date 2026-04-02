@@ -18,7 +18,7 @@ const {
   saveDraft,
   deleteDraft,
 } = require('./lib/storage');
-const { sendApplicationConfirmation, sendContactNotification } = require('./lib/email');
+const { sendApplicationConfirmation, sendApplicationNotification, sendContactNotification } = require('./lib/email');
 const {
   reasonOptions,
   documentOptions,
@@ -203,13 +203,44 @@ function makePage(view, overrides = {}) {
 }
 
 function sanitizeApplicationPayload(raw = {}) {
+  const applicationType = raw.applicationType === 'renewal' ? 'renewal' : 'new';
+  const identificationType = normalizeText(raw.foreignStatus?.identificationType);
   const selectedDocuments = Array.isArray(raw.supportingDocuments?.selected)
     ? raw.supportingDocuments.selected.map(normalizeText).filter(Boolean)
     : [];
 
+  if (!selectedDocuments.length && identificationType) {
+    selectedDocuments.push(identificationType);
+  }
+
+  const mailingAddress = {
+    line1: normalizeText(raw.mailingAddress?.line1),
+    line2: normalizeText(raw.mailingAddress?.line2),
+    city: normalizeText(raw.mailingAddress?.city),
+    stateProvince: normalizeText(raw.mailingAddress?.stateProvince),
+    postalCode: normalizeText(raw.mailingAddress?.postalCode),
+    country: normalizeText(raw.mailingAddress?.country),
+  };
+
+  const foreignAddressInput = {
+    line1: normalizeText(raw.foreignAddress?.line1),
+    line2: normalizeText(raw.foreignAddress?.line2),
+    city: normalizeText(raw.foreignAddress?.city),
+    stateProvince: normalizeText(raw.foreignAddress?.stateProvince),
+    postalCode: normalizeText(raw.foreignAddress?.postalCode),
+    country: normalizeText(raw.foreignAddress?.country),
+  };
+
+  const hasForeignAddress = Object.values(foreignAddressInput).some(Boolean);
+  const foreignAddress = hasForeignAddress
+    ? foreignAddressInput
+    : {
+        ...mailingAddress,
+      };
+
   return {
     draftId: normalizeText(raw.draftId),
-    applicationType: raw.applicationType === 'renewal' ? 'renewal' : 'new',
+    applicationType,
     personal: {
       firstName: normalizeText(raw.personal?.firstName),
       middleName: normalizeText(raw.personal?.middleName),
@@ -233,11 +264,11 @@ function sanitizeApplicationPayload(raw = {}) {
       visaNumber: normalizeText(raw.foreignStatus?.visaNumber),
       visaExpiry: normalizeText(raw.foreignStatus?.visaExpiry),
       dateOfEntryUs: normalizeText(raw.foreignStatus?.dateOfEntryUs),
-      identificationType: normalizeText(raw.foreignStatus?.identificationType),
+      identificationType,
       identificationIssuer: normalizeText(raw.foreignStatus?.identificationIssuer),
       identificationNumber: normalizeText(raw.foreignStatus?.identificationNumber),
       identificationExpiry: normalizeText(raw.foreignStatus?.identificationExpiry),
-      previousItinReceived: normalizeText(raw.foreignStatus?.previousItinReceived),
+      previousItinReceived: normalizeText(raw.foreignStatus?.previousItinReceived) || (applicationType === 'renewal' ? 'yes' : 'no'),
       priorItin: normalizeText(raw.foreignStatus?.priorItin),
       priorIrsn: normalizeText(raw.foreignStatus?.priorIrsn),
       priorIssuedName: normalizeText(raw.foreignStatus?.priorIssuedName),
@@ -256,22 +287,8 @@ function sanitizeApplicationPayload(raw = {}) {
       lengthOfStay: normalizeText(raw.reason?.lengthOfStay),
       otherDescription: normalizeText(raw.reason?.otherDescription),
     },
-    mailingAddress: {
-      line1: normalizeText(raw.mailingAddress?.line1),
-      line2: normalizeText(raw.mailingAddress?.line2),
-      city: normalizeText(raw.mailingAddress?.city),
-      stateProvince: normalizeText(raw.mailingAddress?.stateProvince),
-      postalCode: normalizeText(raw.mailingAddress?.postalCode),
-      country: normalizeText(raw.mailingAddress?.country),
-    },
-    foreignAddress: {
-      line1: normalizeText(raw.foreignAddress?.line1),
-      line2: normalizeText(raw.foreignAddress?.line2),
-      city: normalizeText(raw.foreignAddress?.city),
-      stateProvince: normalizeText(raw.foreignAddress?.stateProvince),
-      postalCode: normalizeText(raw.foreignAddress?.postalCode),
-      country: normalizeText(raw.foreignAddress?.country),
-    },
+    mailingAddress,
+    foreignAddress,
     supportingDocuments: {
       selected: selectedDocuments,
       taxReturnIncluded: normalizeBoolean(raw.supportingDocuments?.taxReturnIncluded),
@@ -313,11 +330,6 @@ function validateApplication(application) {
     ['mailingAddress.stateProvince', application.mailingAddress.stateProvince, 'Mailing state or province is required.'],
     ['mailingAddress.postalCode', application.mailingAddress.postalCode, 'Mailing postal code is required.'],
     ['mailingAddress.country', application.mailingAddress.country, 'Mailing country is required.'],
-    ['foreignAddress.line1', application.foreignAddress.line1, 'Foreign address line 1 is required.'],
-    ['foreignAddress.city', application.foreignAddress.city, 'Foreign city is required.'],
-    ['foreignAddress.stateProvince', application.foreignAddress.stateProvince, 'Foreign state or province is required.'],
-    ['foreignAddress.postalCode', application.foreignAddress.postalCode, 'Foreign postal code is required.'],
-    ['foreignAddress.country', application.foreignAddress.country, 'Foreign country is required.'],
     ['acknowledgements.eSignatureName', application.acknowledgements.eSignatureName, 'Electronic signature is required.'],
   ].forEach(([field, value, message]) => {
     if (!value) errors.push({ field, message });
@@ -329,10 +341,6 @@ function validateApplication(application) {
 
   if (!reason) {
     errors.push({ field: 'reason.code', message: 'The selected ITIN reason is not valid.' });
-  }
-
-  if (!application.supportingDocuments.selected.length) {
-    errors.push({ field: 'supportingDocuments.selected', message: 'Select at least one supporting document.' });
   }
 
   if (!application.acknowledgements.privateService) {
@@ -356,63 +364,7 @@ function validateApplication(application) {
     });
   }
 
-  if (['a', 'f'].includes(application.reason.code)) {
-    if (!application.reason.treatyCountry) {
-      errors.push({ field: 'reason.treatyCountry', message: 'Treaty country is required for this reason.' });
-    }
-    if (!application.reason.treatyArticle) {
-      errors.push({ field: 'reason.treatyArticle', message: 'Treaty article number is required for this reason.' });
-    }
-  }
-
-  if (application.reason.code === 'f') {
-    ['collegeOrCompanyName', 'collegeOrCompanyCityState', 'lengthOfStay'].forEach((fieldName) => {
-      if (!application.reason[fieldName]) {
-        errors.push({
-          field: `reason.${fieldName}`,
-          message: 'Student, professor, or researcher applications require school or company details.',
-        });
-      }
-    });
-  }
-
-  if (['d', 'e'].includes(application.reason.code)) {
-    ['relationshipToCitizen', 'sponsorName', 'sponsorTin'].forEach((fieldName) => {
-      if (!application.reason[fieldName]) {
-        errors.push({
-          field: `reason.${fieldName}`,
-          message: 'Relationship and related U.S. taxpayer details are required for this reason.',
-        });
-      }
-    });
-  }
-
-  if (application.reason.code === 'g') {
-    ['visaHolderName', 'visaHolderRelationship'].forEach((fieldName) => {
-      if (!application.reason[fieldName]) {
-        errors.push({
-          field: `reason.${fieldName}`,
-          message: 'Visa-holder details are required for this reason.',
-        });
-      }
-    });
-  }
-
-  if (application.reason.code === 'h' && !application.reason.otherDescription) {
-    errors.push({
-      field: 'reason.otherDescription',
-      message: 'Please describe the reason that applies under Form W-7 box h.',
-    });
-  }
-
   if (application.applicationType === 'renewal') {
-    if (application.foreignStatus.previousItinReceived !== 'yes') {
-      errors.push({
-        field: 'foreignStatus.previousItinReceived',
-        message: 'A renewal application must indicate that the applicant previously received an ITIN or IRSN.',
-      });
-    }
-
     if (!application.foreignStatus.priorItin && !application.foreignStatus.priorIrsn) {
       errors.push({
         field: 'foreignStatus.priorItin',
@@ -730,6 +682,7 @@ app.post('/api/applications', submissionLimiter, async (req, res) => {
   }
 
   let emailStatus = 'not-sent';
+  let internalNotificationStatus = 'not-sent';
   try {
     const emailResult = await sendApplicationConfirmation({
       application,
@@ -740,8 +693,19 @@ app.post('/api/applications', submissionLimiter, async (req, res) => {
     emailStatus = 'failed';
   }
 
+  try {
+    const notificationResult = await sendApplicationNotification({
+      application,
+      trackingUrl: buildTrackUrl(application),
+    });
+    internalNotificationStatus = notificationResult.status;
+  } catch (error) {
+    internalNotificationStatus = 'failed';
+  }
+
   updateApplication(application.id, {
     emailStatus,
+    internalNotificationStatus,
   });
 
   return res.json({

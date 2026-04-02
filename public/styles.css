@@ -1565,6 +1565,17 @@ th {
   font-weight: 700;
 }
 
+.application-helper-copy {
+  margin-top: 12px;
+  color: #6b7280;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.prior-itin-fields {
+  margin-top: 4px;
+}
+
 .apply-page .review-card {
   display: grid;
   gap: 14px;

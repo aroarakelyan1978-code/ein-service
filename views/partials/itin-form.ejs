@@ -12,7 +12,7 @@
       </div>
       <div class="application-progress-meta">
         <span data-progress-percent>0% Complete</span>
-        <span data-progress-count>1 of 4</span>
+        <span data-progress-count>1 of 3</span>
       </div>
     </div>
 
@@ -25,6 +25,10 @@
     <div class="wizard-status" data-save-status aria-live="polite"></div>
 
     <section class="form-step is-active" data-step="0">
+      <div class="application-step-title">
+        <h2>Applicant Information</h2>
+      </div>
+
       <div class="field-grid one-up application-step-form-intro">
         <label class="field-card">
           <span>Application Type*</span>
@@ -50,33 +54,14 @@
         </label>
       </div>
 
-      <div class="field-grid three-up">
+      <div class="field-grid two-up">
         <label class="field-card">
           <span>First Name*</span>
           <input type="text" name="personal.firstName" data-required />
         </label>
         <label class="field-card">
-          <span>Middle Name</span>
-          <input type="text" name="personal.middleName" />
-        </label>
-        <label class="field-card">
           <span>Last Name*</span>
           <input type="text" name="personal.lastName" data-required />
-        </label>
-      </div>
-
-      <div class="field-grid three-up">
-        <label class="field-card">
-          <span>Name at Birth - First</span>
-          <input type="text" name="personal.birthFirstName" />
-        </label>
-        <label class="field-card">
-          <span>Name at Birth - Middle</span>
-          <input type="text" name="personal.birthMiddleName" />
-        </label>
-        <label class="field-card">
-          <span>Name at Birth - Last</span>
-          <input type="text" name="personal.birthLastName" />
         </label>
       </div>
 
@@ -114,7 +99,19 @@
 
     <section class="form-step" data-step="1">
       <div class="application-step-title">
-        <h2>Foreign Status / Citizenship</h2>
+        <h2>ITIN Request Details</h2>
+      </div>
+
+      <div class="field-grid one-up">
+        <label class="field-card">
+          <span>Reason for ITIN*</span>
+          <select name="reason.code" data-required>
+            <option value="">Select ITIN reason</option>
+            <% reasonOptions.forEach(function(reason) { %>
+              <option value="<%= reason.code %>"><%= reason.code.toUpperCase() %>. <%= reason.label %></option>
+            <% }) %>
+          </select>
+        </label>
       </div>
 
       <div class="field-grid two-up">
@@ -123,27 +120,16 @@
           <input type="text" name="foreignStatus.foreignTaxId" />
         </label>
         <label class="field-card">
-          <span>Date of Entry into the U.S.</span>
-          <input type="date" name="foreignStatus.dateOfEntryUs" />
+          <span>Previously Received an ITIN or IRSN?</span>
+          <select name="foreignStatus.previousItinReceived">
+            <option value="no">No / Do Not Know</option>
+            <option value="yes">Yes</option>
+            <option value="unknown">Not Sure</option>
+          </select>
         </label>
       </div>
 
-      <div class="field-grid three-up">
-        <label class="field-card">
-          <span>U.S. Visa Type</span>
-          <input type="text" name="foreignStatus.visaType" placeholder="Example: F-1" />
-        </label>
-        <label class="field-card">
-          <span>Visa Number</span>
-          <input type="text" name="foreignStatus.visaNumber" />
-        </label>
-        <label class="field-card">
-          <span>Visa Expiration Date</span>
-          <input type="date" name="foreignStatus.visaExpiry" />
-        </label>
-      </div>
-
-      <div class="field-grid four-up">
+      <div class="field-grid four-up application-id-grid">
         <label class="field-card">
           <span>Identification Document Type*</span>
           <select name="foreignStatus.identificationType" data-required>
@@ -167,15 +153,7 @@
         </label>
       </div>
 
-      <div class="field-grid three-up">
-        <label class="field-card">
-          <span>Previously Received an ITIN or IRSN?</span>
-          <select name="foreignStatus.previousItinReceived">
-            <option value="no">No / Do Not Know</option>
-            <option value="yes">Yes</option>
-            <option value="unknown">Not Sure</option>
-          </select>
-        </label>
+      <div class="field-grid two-up prior-itin-fields is-hidden" data-prior-itin-group>
         <label class="field-card">
           <span>Prior ITIN</span>
           <input type="text" name="foreignStatus.priorItin" />
@@ -186,7 +164,7 @@
         </label>
       </div>
 
-      <label class="field-card">
+      <label class="field-card prior-itin-fields is-hidden" data-prior-itin-group>
         <span>Name Under Which Prior ITIN or IRSN Was Issued</span>
         <input type="text" name="foreignStatus.priorIssuedName" />
       </label>
@@ -194,82 +172,7 @@
 
     <section class="form-step" data-step="2">
       <div class="application-step-title">
-        <h2>Reason for ITIN</h2>
-      </div>
-
-      <div class="reason-grid">
-        <% reasonOptions.forEach(function(reason) { %>
-          <label class="reason-card">
-            <input type="radio" name="reason.code" value="<%= reason.code %>" />
-            <span class="reason-copy">
-              <strong><%= reason.code.toUpperCase() %>. <%= reason.label %></strong>
-              <small><%= reason.description %></small>
-            </span>
-          </label>
-        <% }) %>
-      </div>
-
-      <div class="field-grid two-up reason-dependent" data-reason-group="a,f">
-        <label class="field-card">
-          <span>Treaty Country</span>
-          <input type="text" name="reason.treatyCountry" />
-        </label>
-        <label class="field-card">
-          <span>Treaty Article Number</span>
-          <input type="text" name="reason.treatyArticle" />
-        </label>
-      </div>
-
-      <div class="field-grid three-up reason-dependent" data-reason-group="f">
-        <label class="field-card">
-          <span>College, University, or Company</span>
-          <input type="text" name="reason.collegeOrCompanyName" />
-        </label>
-        <label class="field-card">
-          <span>City and State</span>
-          <input type="text" name="reason.collegeOrCompanyCityState" />
-        </label>
-        <label class="field-card">
-          <span>Length of Stay</span>
-          <input type="text" name="reason.lengthOfStay" placeholder="Example: 24 months" />
-        </label>
-      </div>
-
-      <div class="field-grid three-up reason-dependent" data-reason-group="d,e">
-        <label class="field-card">
-          <span>Relationship to U.S. Citizen/Resident Alien</span>
-          <input type="text" name="reason.relationshipToCitizen" />
-        </label>
-        <label class="field-card">
-          <span>Name of U.S. Citizen/Resident Alien</span>
-          <input type="text" name="reason.sponsorName" />
-        </label>
-        <label class="field-card">
-          <span>SSN or ITIN of U.S. Citizen/Resident Alien</span>
-          <input type="text" name="reason.sponsorTin" />
-        </label>
-      </div>
-
-      <div class="field-grid two-up reason-dependent" data-reason-group="g">
-        <label class="field-card">
-          <span>Name of Nonresident Alien Visa Holder</span>
-          <input type="text" name="reason.visaHolderName" />
-        </label>
-        <label class="field-card">
-          <span>Relationship to Visa Holder</span>
-          <input type="text" name="reason.visaHolderRelationship" />
-        </label>
-      </div>
-
-      <label class="field-card reason-dependent" data-reason-group="h">
-        <span>Describe the Other IRS-Approved Reason</span>
-        <textarea name="reason.otherDescription" rows="4"></textarea>
-      </label>
-    </section>
-
-    <section class="form-step" data-step="3">
-      <div class="application-step-title">
-        <h2>Address and Supporting Documents</h2>
+        <h2>Address and Confirmation</h2>
       </div>
 
       <fieldset class="application-fieldset">
@@ -300,62 +203,13 @@
             <input type="text" name="mailingAddress.country" data-required />
           </label>
         </div>
+        <p class="application-helper-copy">If the applicant has a different foreign address, our team can confirm it during review by email.</p>
       </fieldset>
 
       <fieldset class="application-fieldset">
-        <legend>Foreign Address</legend>
-        <div class="field-grid two-up">
-          <label class="field-card">
-            <span>Address Line 1*</span>
-            <input type="text" name="foreignAddress.line1" data-required />
-          </label>
-          <label class="field-card">
-            <span>Address Line 2</span>
-            <input type="text" name="foreignAddress.line2" />
-          </label>
-          <label class="field-card">
-            <span>City*</span>
-            <input type="text" name="foreignAddress.city" data-required />
-          </label>
-          <label class="field-card">
-            <span>State or Province*</span>
-            <input type="text" name="foreignAddress.stateProvince" data-required />
-          </label>
-          <label class="field-card">
-            <span>Postal Code*</span>
-            <input type="text" name="foreignAddress.postalCode" data-required />
-          </label>
-          <label class="field-card">
-            <span>Country*</span>
-            <input type="text" name="foreignAddress.country" data-required />
-          </label>
-        </div>
-      </fieldset>
+        <legend>Supporting Notes</legend>
 
-      <fieldset class="application-fieldset">
-        <legend>Supporting Documents Checklist</legend>
-        <div class="document-grid">
-          <% documentOptions.forEach(function(option) { %>
-            <label class="check-card">
-              <input type="checkbox" name="supportingDocuments.selected" value="<%= option %>" />
-              <span><%= option %></span>
-            </label>
-          <% }) %>
-        </div>
-
-        <div class="field-grid two-up">
-          <label class="check-inline">
-            <input type="checkbox" name="supportingDocuments.taxReturnIncluded" />
-            <span>I plan to include the required federal tax return with Form W-7, unless an IRS exception applies.</span>
-          </label>
-          <label class="check-inline">
-            <input type="checkbox" name="supportingDocuments.exceptionClaimed" />
-            <span>I believe an IRS exception to the return requirement may apply.</span>
-          </label>
-          <label class="check-inline">
-            <input type="checkbox" name="supportingDocuments.needsResidencyProof" />
-            <span>I understand some dependent applications also require proof of U.S. residency.</span>
-          </label>
+        <div class="field-grid one-up">
           <label class="check-inline">
             <input type="checkbox" name="acknowledgements.consentContact" />
             <span>I consent to be contacted about my request and document follow-up.</span>
@@ -364,7 +218,7 @@
 
         <label class="field-card">
           <span>Document Notes or Questions</span>
-          <textarea name="supportingDocuments.documentNotes" rows="4" placeholder="List missing documents, translation needs, or packet questions."></textarea>
+          <textarea name="supportingDocuments.documentNotes" rows="4" placeholder="List any missing documents, questions, or review notes."></textarea>
         </label>
       </fieldset>
 

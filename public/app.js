@@ -157,24 +157,18 @@
       'personal.countryOfCitizenship',
     ],
     [
+      'reason.code',
       'foreignStatus.identificationType',
       'foreignStatus.identificationIssuer',
       'foreignStatus.identificationNumber',
       'foreignStatus.identificationExpiry',
     ],
-    ['reason.code'],
     [
       'mailingAddress.line1',
       'mailingAddress.city',
       'mailingAddress.stateProvince',
       'mailingAddress.postalCode',
       'mailingAddress.country',
-      'foreignAddress.line1',
-      'foreignAddress.city',
-      'foreignAddress.stateProvince',
-      'foreignAddress.postalCode',
-      'foreignAddress.country',
-      'supportingDocuments.selected',
       'acknowledgements.privateService',
       'acknowledgements.irsFeeNotice',
       'acknowledgements.accuracy',
@@ -440,36 +434,14 @@
 
   function conditionalFields(payload) {
     const extras = [];
-    if (['a', 'f'].includes(payload.reason.code)) {
-      extras.push('reason.treatyCountry', 'reason.treatyArticle');
-    }
-    if (payload.reason.code === 'f') {
-      extras.push('reason.collegeOrCompanyName', 'reason.collegeOrCompanyCityState', 'reason.lengthOfStay');
-    }
-    if (['d', 'e'].includes(payload.reason.code)) {
-      extras.push('reason.relationshipToCitizen', 'reason.sponsorName', 'reason.sponsorTin');
-    }
-    if (payload.reason.code === 'g') {
-      extras.push('reason.visaHolderName', 'reason.visaHolderRelationship');
-    }
-    if (payload.reason.code === 'h') {
-      extras.push('reason.otherDescription');
-    }
-    if (payload.applicationType === 'renewal') {
-      extras.push('foreignStatus.previousItinReceived');
-    }
     if (payload.applicationType === 'renewal' || payload.foreignStatus.previousItinReceived === 'yes') {
-      extras.push('foreignStatus.priorIssuedName');
+      extras.push('foreignStatus.priorItin', 'foreignStatus.priorIrsn', 'foreignStatus.priorIssuedName');
     }
     return extras;
   }
 
   function validateField(name, payload) {
-    const value = name === 'supportingDocuments.selected' ? payload.supportingDocuments.selected : getValue(name);
-
-    if (name === 'supportingDocuments.selected') {
-      return Array.isArray(value) && value.length > 0;
-    }
+    const value = getValue(name);
 
     if (
       name === 'acknowledgements.privateService' ||
@@ -483,15 +455,11 @@
       return Boolean(value);
     }
 
-    if (name === 'foreignStatus.previousItinReceived' && payload.applicationType === 'renewal') {
-      return value === 'yes';
-    }
-
-    if (name === 'foreignStatus.priorIssuedName') {
+    if (name === 'foreignStatus.priorItin' || name === 'foreignStatus.priorIrsn') {
       if (payload.applicationType !== 'renewal' && payload.foreignStatus.previousItinReceived !== 'yes') {
         return true;
       }
-      return Boolean(value);
+      return Boolean(payload.foreignStatus.priorItin || payload.foreignStatus.priorIrsn);
     }
 
     return Boolean(value);
@@ -502,13 +470,9 @@
     const payload = collectPayload();
     const names = new Set(stepRules[index] || []);
 
-    if (index === 1 && (payload.applicationType === 'renewal' || payload.foreignStatus.previousItinReceived === 'yes')) {
-      names.add('foreignStatus.priorIssuedName');
-    }
-
-    if (index === 2) {
+    if (index === 1) {
       conditionalFields(payload).forEach((name) => {
-        if (name.startsWith('reason.')) names.add(name);
+        names.add(name);
       });
     }
 
@@ -540,6 +504,14 @@
       group.querySelectorAll('input, textarea, select').forEach((input) => {
         input.disabled = !isVisible;
       });
+    });
+  }
+
+  function updatePriorItinGroups() {
+    const payload = collectPayload();
+    const isVisible = payload.applicationType === 'renewal' || payload.foreignStatus.previousItinReceived === 'yes';
+    form.querySelectorAll('[data-prior-itin-group]').forEach((group) => {
+      group.classList.toggle('is-hidden', !isVisible);
     });
   }
 
@@ -643,7 +615,7 @@
     } catch (error) {
       setStatus(error.message || 'Submission failed. Please review the form and try again.', true);
       submitButton.disabled = false;
-      submitButton.textContent = 'Submit Application';
+      submitButton.textContent = 'Submit';
     }
   }
 
@@ -667,10 +639,12 @@
   form.addEventListener('input', () => {
     clearInvalidStates();
     updateReasonGroups();
+    updatePriorItinGroups();
     scheduleSave();
   });
   form.addEventListener('change', () => {
     updateReasonGroups();
+    updatePriorItinGroups();
     scheduleSave();
   });
 
@@ -693,5 +667,6 @@
   }
 
   updateReasonGroups();
+  updatePriorItinGroups();
   updateProgress();
 })();
