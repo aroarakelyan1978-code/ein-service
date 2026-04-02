@@ -527,8 +527,10 @@ app.get('/thank-you/:trackingCode', (req, res) => {
       'track',
       makePage('track', {
         bodyClass: 'track-page',
-        pageTitle: 'Track ITIN Assistance Request',
-        trackingError: 'We could not find that tracking code.',
+        pageTitle: 'Application Not Found',
+        trackingError:
+          'That thank-you link is not valid or is no longer available. The thank-you page only appears right after a successful submission. Use the order tracking form below if you need to look up an existing request.',
+        trackingCodeQuery: normalizeText(req.params.trackingCode),
       })
     );
   }
