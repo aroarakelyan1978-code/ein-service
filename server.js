@@ -17,6 +17,7 @@ const {
   getDraft,
   saveDraft,
   deleteDraft,
+  checkStorageHealth,
 } = require('./lib/storage');
 const {
   sendApplicationConfirmation,
@@ -30,6 +31,7 @@ const {
   getReasonByCode,
   buildW7Summary,
   createW7PdfBuffer,
+  checkW7TemplateHealth,
 } = require('./lib/w7');
 
 const app = express();
@@ -108,9 +110,25 @@ app.use((req, res, next) => {
   next();
 });
 
+function getRuntimeHealth() {
+  const storage = checkStorageHealth();
+  const w7Template = checkW7TemplateHealth();
+
+  return {
+    ok: storage.ok && w7Template.ok,
+    uptimeSeconds: Math.round(process.uptime()),
+    timestamp: new Date().toISOString(),
+    checks: {
+      storage,
+      w7Template,
+    },
+  };
+}
+
 app.get('/healthz', (req, res) => {
   res.type('application/json');
-  res.send({ ok: true });
+  const health = getRuntimeHealth();
+  res.status(health.ok ? 200 : 503).send(health);
 });
 
 const draftLimiter = rateLimit({
@@ -919,6 +937,12 @@ app.use((error, req, res, next) => {
   res.status(500).send('An unexpected error occurred.');
 });
 
+const startupHealth = getRuntimeHealth();
+if (!startupHealth.ok) {
+  console.error('Startup health check failed.', startupHealth);
+  process.exit(1);
+}
+
 const server = app.listen(port, '0.0.0.0', () => {
   console.log(`ITIN assistance site running at ${site.baseUrl}`);
 });
@@ -926,3 +950,24 @@ const server = app.listen(port, '0.0.0.0', () => {
 server.on('error', (error) => {
   console.error(error);
 });
+
+function shutdown(signal) {
+  console.log(`Received ${signal}. Closing server gracefully.`);
+  server.close((error) => {
+    if (error) {
+      console.error('Error while closing server.', error);
+      process.exit(1);
+      return;
+    }
+
+    process.exit(0);
+  });
+
+  setTimeout(() => {
+    console.error('Graceful shutdown timed out. Forcing exit.');
+    process.exit(1);
+  }, 10000).unref();
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
