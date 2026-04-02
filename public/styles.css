@@ -2294,11 +2294,29 @@ th {
   }
 
   .landing-simple {
-    padding: 24px 0 56px;
+    padding: 22px 0 48px;
+  }
+
+  .landing-simple-shell {
+    gap: 24px;
   }
 
   .landing-simple-box {
-    padding: 22px 18px;
+    padding: 20px 16px;
+  }
+
+  .landing-simple-intro h1 {
+    font-size: clamp(1.75rem, 8vw, 2.3rem);
+  }
+
+  .landing-simple-intro p {
+    font-size: 1rem;
+  }
+
+  .landing-services-layout,
+  .landing-section-block,
+  .landing-final-cta {
+    gap: 16px;
   }
 
   .landing-services-layout,
@@ -2314,13 +2332,60 @@ th {
     text-align: left;
   }
 
+  .landing-simple-apply-row,
+  .landing-final-form {
+    gap: 10px;
+  }
+
+  .landing-simple-apply-row .landing-flat-button,
+  .landing-final-button,
+  .track-simple-action-row .landing-flat-button,
+  .track-simple-result-head .landing-flat-button {
+    width: 100%;
+  }
+
+  .landing-service-list {
+    gap: 14px;
+  }
+
+  .landing-service-list li {
+    padding-left: 22px;
+  }
+
+  .landing-section-block > h2 {
+    font-size: clamp(1.45rem, 7vw, 1.85rem);
+    padding-bottom: 8px;
+  }
+
+  .landing-type-row summary {
+    min-height: 52px;
+    padding: 0 14px;
+  }
+
+  .landing-type-row p {
+    padding: 0 14px 14px;
+    line-height: 1.6;
+  }
+
   .landing-service-mark img {
     width: auto;
-    height: 108px;
+    height: 98px;
   }
 
   .landing-final-form {
     grid-template-columns: 1fr;
+  }
+
+  .landing-final-card {
+    padding: 20px 16px;
+  }
+
+  .landing-final-card h3 {
+    font-size: clamp(1.45rem, 6.6vw, 1.75rem);
+  }
+
+  .landing-final-card p {
+    font-size: 1rem;
   }
 
   .landing-final-button {
@@ -2340,7 +2405,15 @@ th {
 
   .landing-final-mark img {
     width: auto;
-    height: 110px;
+    height: 96px;
+  }
+
+  .landing-final-support,
+  .landing-final-contact {
+    max-width: 28rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.55;
   }
 
   .topbar-inner {
@@ -2366,6 +2439,8 @@ th {
   .disclosure-banner p {
     font-size: 0.76rem;
     line-height: 1.32;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .legal-document {
@@ -2379,11 +2454,43 @@ th {
   .contact-card {
     width: 100%;
     max-width: 100%;
+    padding: 22px 18px 24px;
+  }
+
+  .contact-shell {
+    padding: 20px 0 44px;
+  }
+
+  .contact-header {
+    margin-bottom: 22px;
+  }
+
+  .contact-header h1 {
+    font-size: clamp(2rem, 7vw, 2.35rem);
+  }
+
+  .contact-header p {
+    font-size: 0.98rem;
+    line-height: 1.65;
+  }
+
+  .contact-form {
+    gap: 16px;
   }
 
   .contact-name-grid,
   .contact-info-grid {
     grid-template-columns: 1fr;
+  }
+
+  .contact-info-grid {
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .contact-info-card {
+    min-height: 0;
+    padding: 20px 16px 18px;
   }
 
   .admin-flat-action-row {
@@ -2406,7 +2513,16 @@ th {
   }
 
   .footer-simple-links {
-    gap: 12px 18px;
+    gap: 10px 16px;
+    max-width: 22rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-simple-disclaimer {
+    margin-top: 10px;
+    font-size: 0.84rem;
+    line-height: 1.5;
   }
 
   .application-card {
@@ -2415,5 +2531,18 @@ th {
 
   .application-progress-card {
     padding: 14px 12px 10px;
+  }
+
+  .track-simple-page {
+    padding-top: 22px;
+  }
+
+  .track-simple-form,
+  .track-simple-result {
+    gap: 18px;
+  }
+
+  .track-simple-item {
+    padding: 16px;
   }
 }
