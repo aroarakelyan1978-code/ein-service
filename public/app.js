@@ -10,6 +10,122 @@
     }
   }
 
+  function initLandingTypeAccordion() {
+    const rows = Array.from(document.querySelectorAll('.landing-type-row'));
+    if (!rows.length) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let isSwitching = false;
+
+    function getContent(row) {
+      return row.querySelector('p');
+    }
+
+    function cleanupContent(content) {
+      content.style.height = '';
+      content.style.opacity = '';
+      content.style.overflow = '';
+    }
+
+    function animateContent(content, keyframes) {
+      const animation = content.animate(keyframes, {
+        duration: 220,
+        easing: 'ease',
+        fill: 'forwards',
+      });
+
+      return new Promise((resolve) => {
+        animation.addEventListener('finish', resolve, { once: true });
+        animation.addEventListener('cancel', resolve, { once: true });
+      });
+    }
+
+    async function expandRow(row) {
+      const content = getContent(row);
+      if (!content) {
+        row.open = true;
+        return;
+      }
+
+      if (prefersReducedMotion) {
+        row.open = true;
+        return;
+      }
+
+      row.open = true;
+      content.style.overflow = 'hidden';
+      content.style.height = '0px';
+      content.style.opacity = '0';
+
+      const targetHeight = `${content.scrollHeight}px`;
+      await animateContent(content, [
+        { height: '0px', opacity: 0 },
+        { height: targetHeight, opacity: 1 },
+      ]);
+
+      cleanupContent(content);
+    }
+
+    async function collapseRow(row) {
+      if (!row.open) return;
+
+      const content = getContent(row);
+      if (!content) {
+        row.open = false;
+        return;
+      }
+
+      if (prefersReducedMotion) {
+        row.open = false;
+        return;
+      }
+
+      const startHeight = `${content.offsetHeight}px`;
+      content.style.overflow = 'hidden';
+      content.style.height = startHeight;
+      content.style.opacity = '1';
+
+      await animateContent(content, [
+        { height: startHeight, opacity: 1 },
+        { height: '0px', opacity: 0 },
+      ]);
+
+      row.open = false;
+      cleanupContent(content);
+    }
+
+    rows.forEach((row) => {
+      const summary = row.querySelector('summary');
+      if (!summary) return;
+
+      summary.addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        if (isSwitching) return;
+        isSwitching = true;
+
+        try {
+          const openRow = rows.find((item) => item !== row && item.open);
+
+          if (row.open) {
+            await collapseRow(row);
+            return;
+          }
+
+          if (openRow) {
+            await collapseRow(openRow);
+          }
+
+          await expandRow(row);
+        } finally {
+          isSwitching = false;
+        }
+      });
+    });
+  }
+
+  initLandingTypeAccordion();
+
   const form = document.querySelector('[data-itin-form]');
   if (!form) return;
 
