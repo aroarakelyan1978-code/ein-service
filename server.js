@@ -18,7 +18,12 @@ const {
   saveDraft,
   deleteDraft,
 } = require('./lib/storage');
-const { sendApplicationConfirmation, sendApplicationNotification, sendContactNotification } = require('./lib/email');
+const {
+  sendApplicationConfirmation,
+  sendApplicationNotification,
+  sendContactNotification,
+  sendServiceRequestNotification,
+} = require('./lib/email');
 const {
   reasonOptions,
   documentOptions,
@@ -57,6 +62,14 @@ const applicationStatuses = [
   'Prepared for Submission',
   'Closed',
 ];
+const serviceRequestOptions = [
+  { value: 'new-itin-application-assistance', label: 'New ITIN Application Assistance' },
+  { value: 'itin-renewal-assistance', label: 'ITIN Renewal Assistance' },
+  { value: 'form-w7-preparation-review', label: 'Form W-7 Preparation Review' },
+  { value: 'existing-application-support', label: 'Existing Application Support / Status Update' },
+  { value: 'document-checklist-guidance', label: 'Document Checklist Guidance' },
+  { value: 'pricing-and-service-questions', label: 'Pricing and Service Questions' },
+];
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -90,6 +103,7 @@ app.use((req, res, next) => {
   res.locals.site = site;
   res.locals.currentPath = req.path;
   res.locals.applicationStatuses = applicationStatuses;
+  res.locals.serviceRequestOptions = serviceRequestOptions;
   res.locals.year = new Date().getFullYear();
   next();
 });
@@ -198,8 +212,15 @@ function makePage(view, overrides = {}) {
     contactSubmitted: false,
     contactError: '',
     contactForm: {},
+    serviceRequestSubmitted: false,
+    serviceRequestError: '',
+    serviceRequestForm: {},
     ...overrides,
   };
+}
+
+function getServiceRequestOption(value) {
+  return serviceRequestOptions.find((option) => option.value === value) || null;
 }
 
 function sanitizeApplicationPayload(raw = {}) {
@@ -432,6 +453,85 @@ app.get('/apply', (req, res) => {
   );
 });
 
+app.get('/service-request', (req, res) => {
+  const requestedService = normalizeText(req.query.service);
+  const option = getServiceRequestOption(requestedService);
+
+  res.render(
+    'service-request',
+    makePage('service-request', {
+      bodyClass: 'service-request-page apply-page',
+      pageTitle: 'ITIN Service Request',
+      canonical: `${site.baseUrl}/service-request`,
+      metaDescription:
+        'Request ITIN assistance services through a short guided form for new applications, renewals, document review, and support.',
+      serviceRequestSubmitted: req.query.submitted === '1',
+      serviceRequestForm: {
+        serviceType: option ? option.value : '',
+      },
+    })
+  );
+});
+
+app.post('/service-request', submissionLimiter, async (req, res) => {
+  const serviceType = normalizeText(req.body.serviceType);
+  const serviceOption = getServiceRequestOption(serviceType);
+  const serviceRequestForm = {
+    serviceType,
+    firstName: normalizeText(req.body.firstName),
+    lastName: normalizeText(req.body.lastName),
+    email: normalizeEmail(req.body.email),
+    phone: normalizeText(req.body.phone),
+    referenceNumber: normalizeText(req.body.referenceNumber),
+    message: normalizeText(req.body.message),
+    privateService: normalizeBoolean(req.body.privateService),
+  };
+
+  if (
+    !serviceOption ||
+    !serviceRequestForm.firstName ||
+    !serviceRequestForm.lastName ||
+    !serviceRequestForm.email ||
+    !serviceRequestForm.phone ||
+    !serviceRequestForm.privateService
+  ) {
+    return res.status(400).render(
+      'service-request',
+      makePage('service-request', {
+        bodyClass: 'service-request-page apply-page',
+        pageTitle: 'ITIN Service Request',
+        canonical: `${site.baseUrl}/service-request`,
+        metaDescription:
+          'Request ITIN assistance services through a short guided form for new applications, renewals, document review, and support.',
+        serviceRequestError: 'Please complete the required fields before submitting your request.',
+        serviceRequestForm,
+      })
+    );
+  }
+
+  try {
+    await sendServiceRequestNotification({
+      ...serviceRequestForm,
+      serviceLabel: serviceOption.label,
+    });
+  } catch (error) {
+    return res.status(500).render(
+      'service-request',
+      makePage('service-request', {
+        bodyClass: 'service-request-page apply-page',
+        pageTitle: 'ITIN Service Request',
+        canonical: `${site.baseUrl}/service-request`,
+        metaDescription:
+          'Request ITIN assistance services through a short guided form for new applications, renewals, document review, and support.',
+        serviceRequestError: 'We could not send your request at this time. Please try again shortly.',
+        serviceRequestForm,
+      })
+    );
+  }
+
+  return res.redirect(`/service-request?submitted=1&service=${encodeURIComponent(serviceOption.value)}`);
+});
+
 app.get('/thank-you/:trackingCode', (req, res) => {
   const application = getApplicationByTrackingCode(req.params.trackingCode);
   if (!application) {
@@ -573,7 +673,7 @@ app.get('/robots.txt', (req, res) => {
 });
 
 app.get('/sitemap.xml', (req, res) => {
-  const urls = ['/', '/apply', '/track', '/privacy', '/terms', '/contact', '/services-pricing'];
+  const urls = ['/', '/apply', '/service-request', '/track', '/privacy', '/terms', '/contact', '/services-pricing'];
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',

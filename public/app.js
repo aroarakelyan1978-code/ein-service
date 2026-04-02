@@ -126,6 +126,133 @@
 
   initLandingTypeAccordion();
 
+  function initServiceRequestForm() {
+    const serviceForm = document.querySelector('[data-service-request-form]');
+    if (!serviceForm) return;
+
+    const steps = Array.from(serviceForm.querySelectorAll('.form-step'));
+    const progressFill = serviceForm.querySelector('[data-sr-progress-fill]');
+    const progressPercent = serviceForm.querySelector('[data-sr-progress-percent]');
+    const progressCount = serviceForm.querySelector('[data-sr-progress-count]');
+    const nextButton = serviceForm.querySelector('[data-sr-next-step]');
+    const prevButton = serviceForm.querySelector('[data-sr-prev-step]');
+    const submitButton = serviceForm.querySelector('[data-sr-submit-form]');
+    let currentStep = 0;
+
+    const stepRules = [
+      ['serviceType'],
+      ['firstName', 'lastName', 'email', 'phone'],
+      ['privateService'],
+    ];
+
+    function getNodes(name) {
+      const field = serviceForm.elements.namedItem(name);
+      if (!field) return [];
+      if (typeof field.length === 'number' && !field.tagName) {
+        return Array.from(field);
+      }
+      return [field];
+    }
+
+    function getValue(name) {
+      const nodes = getNodes(name);
+      if (!nodes.length) return '';
+      const first = nodes[0];
+
+      if (first.type === 'radio') {
+        const checked = nodes.find((node) => node.checked);
+        return checked ? checked.value : '';
+      }
+
+      if (first.type === 'checkbox') {
+        return Boolean(first.checked);
+      }
+
+      return String(first.value || '').trim();
+    }
+
+    function clearInvalidStates() {
+      serviceForm.querySelectorAll('.is-invalid').forEach((node) => node.classList.remove('is-invalid'));
+    }
+
+    function markInvalid(name) {
+      const nodes = getNodes(name);
+      nodes.forEach((node) => {
+        const card = node.closest('.field-card, .service-request-option, .check-inline');
+        if (card) {
+          card.classList.add('is-invalid');
+        }
+      });
+    }
+
+    function validateStep(index) {
+      clearInvalidStates();
+      const invalid = stepRules[index].filter((name) => !getValue(name));
+      invalid.forEach(markInvalid);
+
+      if (invalid.length) {
+        const firstNode = getNodes(invalid[0])[0];
+        if (firstNode && typeof firstNode.focus === 'function') {
+          firstNode.focus();
+        }
+        return false;
+      }
+
+      return true;
+    }
+
+    function updateProgress() {
+      const progress = steps.length > 1
+        ? Math.round((currentStep / (steps.length - 1)) * 100)
+        : 100;
+
+      if (progressFill) progressFill.style.width = `${progress}%`;
+      if (progressPercent) progressPercent.textContent = `${progress}% Complete`;
+      if (progressCount) progressCount.textContent = `${currentStep + 1} of ${steps.length}`;
+
+      steps.forEach((step, index) => {
+        step.classList.toggle('is-active', index === currentStep);
+      });
+
+      prevButton.classList.toggle('is-hidden', currentStep === 0);
+      nextButton.classList.toggle('is-hidden', currentStep === steps.length - 1);
+      submitButton.classList.toggle('is-hidden', currentStep !== steps.length - 1);
+    }
+
+    nextButton.addEventListener('click', () => {
+      if (!validateStep(currentStep)) return;
+      currentStep = Math.min(currentStep + 1, steps.length - 1);
+      updateProgress();
+    });
+
+    prevButton.addEventListener('click', () => {
+      currentStep = Math.max(currentStep - 1, 0);
+      clearInvalidStates();
+      updateProgress();
+    });
+
+    serviceForm.addEventListener('input', clearInvalidStates);
+    serviceForm.addEventListener('change', clearInvalidStates);
+    serviceForm.addEventListener('submit', (event) => {
+      clearInvalidStates();
+      for (let index = 0; index < steps.length; index += 1) {
+        currentStep = index;
+        updateProgress();
+        if (!validateStep(index)) {
+          event.preventDefault();
+          return;
+        }
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
+    });
+
+    updateProgress();
+  }
+
+  initServiceRequestForm();
+
   const form = document.querySelector('[data-itin-form]');
   if (!form) return;
 

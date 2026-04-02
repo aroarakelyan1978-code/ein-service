@@ -1,0 +1,112 @@
+<%- include('partials/header') %>
+
+<section class="container section-pad application-page-wrap">
+  <section class="wizard-shell application-shell service-request-shell">
+    <form class="wizard-form application-card card service-request-card" method="post" action="/service-request" data-service-request-form novalidate>
+      <div class="application-header">
+        <h1>ITIN Service Request Form</h1>
+      </div>
+
+      <div class="application-progress-card" aria-label="Service request progress">
+        <div class="application-progress-bar">
+          <span data-sr-progress-fill></span>
+        </div>
+        <div class="application-progress-meta">
+          <span data-sr-progress-percent>0% Complete</span>
+          <span data-sr-progress-count>1 of 3</span>
+        </div>
+      </div>
+
+      <% if (serviceRequestSubmitted) { %>
+        <div class="inline-alert">Your request has been received. Our team will review it and follow up by email.</div>
+      <% } %>
+
+      <% if (serviceRequestError) { %>
+        <div class="inline-alert inline-alert-error"><%= serviceRequestError %></div>
+      <% } %>
+
+      <section class="form-step is-active" data-step="0">
+        <div class="application-step-title">
+          <h2>Service Request</h2>
+        </div>
+
+        <div class="service-request-list">
+          <% serviceRequestOptions.forEach(function(option) { %>
+            <label class="service-request-option">
+              <input
+                type="radio"
+                name="serviceType"
+                value="<%= option.value %>"
+                <%= serviceRequestForm.serviceType === option.value ? 'checked' : '' %>
+              />
+              <span><%= option.label %></span>
+            </label>
+          <% }) %>
+        </div>
+      </section>
+
+      <section class="form-step" data-step="1">
+        <div class="application-step-title">
+          <h2>Applicant Information</h2>
+        </div>
+
+        <div class="field-grid two-up">
+          <label class="field-card">
+            <span>First Name*</span>
+            <input type="text" name="firstName" value="<%= serviceRequestForm.firstName || '' %>" />
+          </label>
+          <label class="field-card">
+            <span>Last Name*</span>
+            <input type="text" name="lastName" value="<%= serviceRequestForm.lastName || '' %>" />
+          </label>
+        </div>
+
+        <div class="field-grid two-up">
+          <label class="field-card">
+            <span>Email Address*</span>
+            <input type="email" name="email" value="<%= serviceRequestForm.email || '' %>" />
+          </label>
+          <label class="field-card">
+            <span>Phone Number*</span>
+            <input type="tel" name="phone" value="<%= serviceRequestForm.phone || '' %>" />
+          </label>
+        </div>
+      </section>
+
+      <section class="form-step" data-step="2">
+        <div class="application-step-title">
+          <h2>Additional Details</h2>
+        </div>
+
+        <div class="field-grid one-up">
+          <label class="field-card">
+            <span>Current ITIN or Tracking Code</span>
+            <input type="text" name="referenceNumber" value="<%= serviceRequestForm.referenceNumber || '' %>" placeholder="Optional" />
+          </label>
+        </div>
+
+        <label class="field-card">
+          <span>How can we help?</span>
+          <textarea name="message" rows="5" placeholder="Share any details about the service request."><%= serviceRequestForm.message || '' %></textarea>
+        </label>
+
+        <div class="review-card service-request-review">
+          <label class="check-inline">
+            <input type="checkbox" name="privateService" <%= serviceRequestForm.privateService ? 'checked' : '' %> />
+            <span>I understand this is a private assistance service and not the IRS.</span>
+          </label>
+        </div>
+      </section>
+
+      <div class="form-actions application-form-actions">
+        <button type="button" class="button button-secondary is-hidden" data-sr-prev-step>Back</button>
+        <div class="action-group">
+          <button type="button" class="button button-primary" data-sr-next-step>Next</button>
+          <button type="submit" class="button button-primary is-hidden" data-sr-submit-form>Submit</button>
+        </div>
+      </div>
+    </form>
+  </section>
+</section>
+
+<%- include('partials/footer') %>
