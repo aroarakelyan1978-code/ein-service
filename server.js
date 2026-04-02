@@ -146,6 +146,10 @@ function normalizeEmail(value) {
   return normalizeText(value).toLowerCase();
 }
 
+function buildFullName(...parts) {
+  return parts.map(normalizeText).filter(Boolean).join(' ');
+}
+
 function buildTrackingCode() {
   const stamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   let code = '';
@@ -226,6 +230,8 @@ function getServiceRequestOption(value) {
 function sanitizeApplicationPayload(raw = {}) {
   const applicationType = raw.applicationType === 'renewal' ? 'renewal' : 'new';
   const identificationType = normalizeText(raw.foreignStatus?.identificationType);
+  const acknowledgementInput = raw.acknowledgements && typeof raw.acknowledgements === 'object' ? raw.acknowledgements : {};
+  const applicantFullName = buildFullName(raw.personal?.firstName, raw.personal?.middleName, raw.personal?.lastName);
   const selectedDocuments = Array.isArray(raw.supportingDocuments?.selected)
     ? raw.supportingDocuments.selected.map(normalizeText).filter(Boolean)
     : [];
@@ -318,11 +324,11 @@ function sanitizeApplicationPayload(raw = {}) {
       documentNotes: normalizeText(raw.supportingDocuments?.documentNotes),
     },
     acknowledgements: {
-      privateService: normalizeBoolean(raw.acknowledgements?.privateService),
-      irsFeeNotice: normalizeBoolean(raw.acknowledgements?.irsFeeNotice),
-      accuracy: normalizeBoolean(raw.acknowledgements?.accuracy),
-      consentContact: normalizeBoolean(raw.acknowledgements?.consentContact),
-      eSignatureName: normalizeText(raw.acknowledgements?.eSignatureName),
+      privateService: 'privateService' in acknowledgementInput ? normalizeBoolean(acknowledgementInput.privateService) : true,
+      irsFeeNotice: 'irsFeeNotice' in acknowledgementInput ? normalizeBoolean(acknowledgementInput.irsFeeNotice) : true,
+      accuracy: 'accuracy' in acknowledgementInput ? normalizeBoolean(acknowledgementInput.accuracy) : true,
+      consentContact: normalizeBoolean(acknowledgementInput.consentContact),
+      eSignatureName: normalizeText(acknowledgementInput.eSignatureName) || applicantFullName,
     },
   };
 }
@@ -351,7 +357,6 @@ function validateApplication(application) {
     ['mailingAddress.stateProvince', application.mailingAddress.stateProvince, 'Mailing state or province is required.'],
     ['mailingAddress.postalCode', application.mailingAddress.postalCode, 'Mailing postal code is required.'],
     ['mailingAddress.country', application.mailingAddress.country, 'Mailing country is required.'],
-    ['acknowledgements.eSignatureName', application.acknowledgements.eSignatureName, 'Electronic signature is required.'],
   ].forEach(([field, value, message]) => {
     if (!value) errors.push({ field, message });
   });
@@ -362,27 +367,6 @@ function validateApplication(application) {
 
   if (!reason) {
     errors.push({ field: 'reason.code', message: 'The selected ITIN reason is not valid.' });
-  }
-
-  if (!application.acknowledgements.privateService) {
-    errors.push({
-      field: 'acknowledgements.privateService',
-      message: 'You must acknowledge that this is a private assistance service.',
-    });
-  }
-
-  if (!application.acknowledgements.irsFeeNotice) {
-    errors.push({
-      field: 'acknowledgements.irsFeeNotice',
-      message: 'You must acknowledge the fee disclosure before continuing.',
-    });
-  }
-
-  if (!application.acknowledgements.accuracy) {
-    errors.push({
-      field: 'acknowledgements.accuracy',
-      message: 'You must confirm that the information is accurate to continue.',
-    });
   }
 
   if (application.applicationType === 'renewal') {

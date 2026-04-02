@@ -296,10 +296,6 @@
       'mailingAddress.stateProvince',
       'mailingAddress.postalCode',
       'mailingAddress.country',
-      'acknowledgements.privateService',
-      'acknowledgements.irsFeeNotice',
-      'acknowledgements.accuracy',
-      'acknowledgements.eSignatureName',
     ],
   ];
 
@@ -509,11 +505,7 @@
       'supportingDocuments.exceptionClaimed',
       'supportingDocuments.needsResidencyProof',
       'supportingDocuments.documentNotes',
-      'acknowledgements.privateService',
-      'acknowledgements.irsFeeNotice',
-      'acknowledgements.accuracy',
       'acknowledgements.consentContact',
-      'acknowledgements.eSignatureName',
     ];
 
     assignments.forEach((path) => {
@@ -570,11 +562,7 @@
   function validateField(name, payload) {
     const value = getValue(name);
 
-    if (
-      name === 'acknowledgements.privateService' ||
-      name === 'acknowledgements.irsFeeNotice' ||
-      name === 'acknowledgements.accuracy'
-    ) {
+    if (name === 'acknowledgements.consentContact') {
       return Boolean(value);
     }
 
