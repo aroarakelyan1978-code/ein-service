@@ -1,31 +1,51 @@
 <%- include('partials/header') %>
 
-<section class="subpage-hero">
-  <div class="container narrow">
-    <span class="section-kicker">Application received</span>
-    <h1>Thank you. Your request has been submitted.</h1>
-    <p>We received your ITIN assistance intake and assigned a tracking code for follow-up.</p>
-  </div>
-</section>
+<section class="landing-simple thank-you-flat-page">
+  <div class="container landing-simple-shell thank-you-simple-shell">
+    <section class="landing-simple-intro thank-you-simple-intro">
+      <span class="section-kicker">Application received</span>
+      <h1>Thank you. Your request has been submitted.</h1>
+      <p>We received your ITIN assistance intake and assigned a tracking code for follow-up.</p>
+    </section>
 
-<section class="container section-pad narrow">
-  <article class="card thank-you-card">
-    <div class="tracking-pill"><%= application.trackingCode %></div>
-    <p><strong>Current status:</strong> <%= application.status %></p>
-    <p><%= site.disclosure %> The IRS does not charge for issuing an ITIN, and ITIN issuance decisions remain with the IRS.</p>
-    <div class="thank-you-actions">
-      <a class="button button-primary" href="<%= trackUrl %>">Track Application</a>
-      <a class="button button-secondary" href="/track/<%= application.trackingCode %>/pdf?email=<%= encodeURIComponent(application.contact.email) %>">Download Official W-7</a>
-    </div>
-    <div class="next-steps">
-      <h2>Next steps</h2>
-      <ul>
-        <li>Our team reviews your intake for completeness.</li>
-        <li>You may be contacted if documents or clarifications are needed.</li>
-        <li>You can use your tracking code and email to monitor the request.</li>
-      </ul>
-    </div>
-  </article>
+    <section class="landing-simple-box thank-you-summary-box">
+      <h2>ITIN Application Submitted</h2>
+      <div class="thank-you-code-grid">
+        <div class="thank-you-code-item">
+          <span>Tracking Code</span>
+          <strong><%= application.trackingCode %></strong>
+        </div>
+        <div class="thank-you-code-item">
+          <span>Current Status</span>
+          <strong><%= application.status %></strong>
+        </div>
+      </div>
+      <p class="thank-you-summary-copy"><%= site.disclosure %> The IRS does not charge for issuing an ITIN, and ITIN issuance decisions remain with the IRS.</p>
+      <div class="thank-you-flat-actions">
+        <a class="landing-flat-button" href="<%= trackUrl %>">TRACK APPLICATION</a>
+        <a class="landing-flat-button landing-flat-button-secondary" href="/track/<%= application.trackingCode %>/pdf?email=<%= encodeURIComponent(application.contact.email) %>">DOWNLOAD OFFICIAL W-7</a>
+      </div>
+    </section>
+
+    <section class="landing-section-block thank-you-next-block">
+      <h2>What Happens Next</h2>
+      <div class="landing-simple-box thank-you-next-box">
+        <ul class="thank-you-next-list">
+          <li>Our team reviews your intake for completeness.</li>
+          <li>You may be contacted if documents or clarifications are needed.</li>
+          <li>Use your tracking code and email to monitor the request.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="landing-final-cta thank-you-support-block">
+      <div class="landing-final-mark" aria-hidden="true">
+        <img src="/icon-building.png" alt="" />
+      </div>
+      <p class="landing-final-support">Please keep your tracking code available for order updates and document follow-up.</p>
+      <p class="landing-final-contact">Need help? E-mail us at <a href="mailto:<%= site.supportEmail %>"><%= site.supportEmail %></a> or visit <a href="/contact">Contact Us page</a>.</p>
+    </section>
+  </div>
 </section>
 
 <%- include('partials/footer') %>

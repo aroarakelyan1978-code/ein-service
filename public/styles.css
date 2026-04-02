@@ -1835,6 +1835,16 @@ th {
   background: #2e5f9b;
 }
 
+.landing-flat-button-secondary {
+  color: #2f5f97;
+  background: #ffffff;
+  border-color: #9eb1c7;
+}
+
+.landing-flat-button-secondary:hover {
+  background: #f5f8fc;
+}
+
 .landing-simple-apply {
   max-width: 860px;
   margin: 0 auto;
@@ -2068,6 +2078,86 @@ th {
 .landing-final-cta h2 {
   margin: 0;
   font-size: clamp(2rem, 3vw, 2.6rem);
+}
+
+.thank-you-flat-page {
+  padding: 36px 0 72px;
+}
+
+.thank-you-simple-shell {
+  gap: 28px;
+}
+
+.thank-you-simple-intro {
+  text-align: center;
+}
+
+.thank-you-summary-box {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.thank-you-code-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.thank-you-code-item {
+  padding: 18px 20px;
+  border: 1px solid #d4dbe5;
+  background: #ffffff;
+}
+
+.thank-you-code-item span {
+  display: block;
+  margin-bottom: 8px;
+  color: #5b6777;
+  font-size: 0.92rem;
+}
+
+.thank-you-code-item strong {
+  display: block;
+  color: #1d2a3e;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.thank-you-summary-copy {
+  text-align: center;
+  color: #414b5a;
+  font-size: 1.02rem;
+}
+
+.thank-you-flat-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.thank-you-next-block {
+  gap: 16px;
+}
+
+.thank-you-next-box {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.thank-you-next-list {
+  margin: 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 12px;
+  color: #414b5a;
+  line-height: 1.7;
+}
+
+.thank-you-support-block {
+  gap: 14px;
 }
 
 .landing-final-card {
@@ -2481,6 +2571,31 @@ th {
   .landing-simple-apply-row,
   .landing-final-form {
     gap: 10px;
+  }
+
+  .thank-you-flat-page {
+    padding: 22px 0 48px;
+  }
+
+  .thank-you-simple-shell {
+    gap: 22px;
+  }
+
+  .thank-you-code-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .thank-you-code-item {
+    padding: 16px 14px;
+  }
+
+  .thank-you-flat-actions {
+    gap: 10px;
+  }
+
+  .thank-you-flat-actions .landing-flat-button {
+    width: 100%;
   }
 
   .application-card {
