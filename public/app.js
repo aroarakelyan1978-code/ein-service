@@ -268,8 +268,6 @@
   const saveButton = form.querySelector('[data-save-draft]');
   const storageKey = 'itin-assist-draft';
   let currentStep = 0;
-  let saveTimer = null;
-  let autoAdvanceTimer = null;
   let draftId = config.resumeDraftId || '';
 
   const stepRules = [
@@ -668,50 +666,6 @@
     updateProgress();
   }
 
-  function getNextFocusable(stepIndex) {
-    const selectors = [
-      '[data-step="1"] select[name="itinProfile"]',
-      '[data-step="2"] input[name="contact.email"]',
-    ];
-
-    const selector = selectors[stepIndex];
-    if (!selector) return null;
-    return form.querySelector(selector);
-  }
-
-  function maybeAutoAdvanceFromStart(changedName) {
-    const payload = collectPayload();
-
-    if (changedName === 'applicationType' && currentStep === 0 && validateField('applicationType', payload)) {
-      window.clearTimeout(autoAdvanceTimer);
-      autoAdvanceTimer = window.setTimeout(() => {
-        const latestPayload = collectPayload();
-        if (currentStep !== 0 || !validateField('applicationType', latestPayload)) return;
-        setStatus('');
-        goToStep(1);
-        const nextField = getNextFocusable(1);
-        if (nextField && typeof nextField.focus === 'function') {
-          nextField.focus();
-        }
-      }, 140);
-      return;
-    }
-
-    if (changedName === 'itinProfile' && currentStep === 1 && validateField('itinProfile', payload)) {
-      window.clearTimeout(autoAdvanceTimer);
-      autoAdvanceTimer = window.setTimeout(() => {
-        const latestPayload = collectPayload();
-        if (currentStep !== 1 || !validateField('itinProfile', latestPayload)) return;
-        setStatus('');
-        goToStep(2);
-        const nextField = getNextFocusable(2);
-        if (nextField && typeof nextField.focus === 'function') {
-          nextField.focus();
-        }
-      }, 140);
-    }
-  }
-
   function getFirstIncompleteStep() {
     const payload = collectPayload();
 
@@ -757,19 +711,13 @@
           draftId,
         },
         savedAt: Date.now(),
+        savedByUser: Boolean(showMessage),
       };
       window.localStorage.setItem(storageKey, JSON.stringify(draftRecord));
       setStatus(showMessage ? `Draft saved. Resume later: ${result.resumeUrl}` : 'Draft saved.');
     } catch (error) {
       setStatus('Draft could not be saved right now.', true);
     }
-  }
-
-  function scheduleSave() {
-    clearTimeout(saveTimer);
-    saveTimer = window.setTimeout(() => {
-      saveDraft(false);
-    }, 700);
   }
 
   async function submitApplication(event) {
@@ -832,13 +780,10 @@
     clearInvalidStates();
     updateReasonGroups();
     updatePriorItinGroups();
-    scheduleSave();
   });
-  form.addEventListener('change', (event) => {
+  form.addEventListener('change', () => {
     updateReasonGroups();
     updatePriorItinGroups();
-    maybeAutoAdvanceFromStart(event.target && event.target.name ? event.target.name : '');
-    scheduleSave();
   });
 
   const serverDraft = config.initialDraft || null;
@@ -853,7 +798,7 @@
   if (serverDraft) {
     populateFromData(serverDraft);
     setStatus('Saved draft restored.');
-  } else if (localDraft && localDraft.payload) {
+  } else if (localDraft && localDraft.savedByUser && localDraft.payload) {
     populateFromData(localDraft.payload);
     draftId = localDraft.draftId || draftId;
     setStatus('Local draft restored.');
@@ -861,13 +806,8 @@
 
   updateReasonGroups();
   updatePriorItinGroups();
-  currentStep = getFirstIncompleteStep();
-  updateProgress();
-
-  window.setTimeout(() => {
-    updateReasonGroups();
-    updatePriorItinGroups();
+  if (serverDraft || (localDraft && localDraft.savedByUser && localDraft.payload)) {
     currentStep = getFirstIncompleteStep();
-    updateProgress();
-  }, 180);
+  }
+  updateProgress();
 })();
