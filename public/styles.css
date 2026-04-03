@@ -2048,24 +2048,35 @@ th {
 
 .landing-type-row p {
   margin: 0;
-  padding: 0 16px 18px;
   color: #4a5565;
   line-height: 1.7;
 }
 
 .landing-type-body {
-  padding: 0 16px 18px;
+  padding: 14px 18px 18px;
   display: grid;
-  gap: 14px;
+  gap: 10px;
+  border-top: 1px solid #d7dde6;
 }
 
 .landing-type-body p {
   padding: 0;
+  font-size: 0.98rem;
 }
 
-.landing-type-button {
-  width: fit-content;
-  min-width: 186px;
+.landing-type-link {
+  display: inline-flex;
+  justify-self: center;
+  align-items: center;
+  margin-top: 2px;
+  text-decoration: none;
+  color: #0b5fae;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.landing-type-link:hover {
+  text-decoration: underline;
 }
 
 .landing-final-cta {
