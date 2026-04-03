@@ -35,28 +35,10 @@
 
     <section class="form-step is-active" data-step="0">
       <div class="application-step-title">
-        <h2>ITIN Type</h2>
-      </div>
-
-      <div class="field-grid one-up application-start-grid">
-        <label class="field-card">
-          <span>ITIN Type*</span>
-          <select name="itinProfile" data-required>
-            <option value="">Select Type</option>
-            <% itinProfileOptions.forEach(function(option) { %>
-              <option value="<%= option.value %>"><%= option.label %></option>
-            <% }) %>
-          </select>
-        </label>
-      </div>
-    </section>
-
-    <section class="form-step" data-step="1">
-      <div class="application-step-title">
         <h2>Application Type</h2>
       </div>
 
-      <div class="application-type-choice-grid">
+      <div class="application-type-choice-grid application-start-choice-grid">
         <label class="application-type-choice">
           <input type="radio" name="applicationType" value="new" />
           <span>
@@ -70,6 +52,24 @@
             <strong>Renew an Existing ITIN</strong>
             <small>Use this option when the applicant needs to renew or reactivate a prior ITIN.</small>
           </span>
+        </label>
+      </div>
+    </section>
+
+    <section class="form-step" data-step="1">
+      <div class="application-step-title">
+        <h2>ITIN Type</h2>
+      </div>
+
+      <div class="field-grid one-up application-start-grid">
+        <label class="field-card">
+          <span>ITIN Type*</span>
+          <select name="itinProfile" data-required>
+            <option value="">Select Type</option>
+            <% itinProfileOptions.forEach(function(option) { %>
+              <option value="<%= option.value %>"><%= option.label %></option>
+            <% }) %>
+          </select>
         </label>
       </div>
     </section>

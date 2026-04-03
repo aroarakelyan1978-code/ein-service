@@ -269,14 +269,15 @@
   const storageKey = 'itin-assist-draft';
   let currentStep = 0;
   let saveTimer = null;
+  let autoAdvanceTimer = null;
   let draftId = config.resumeDraftId || '';
 
   const stepRules = [
     [
-      'itinProfile',
+      'applicationType',
     ],
     [
-      'applicationType',
+      'itinProfile',
     ],
     [
       'contact.email',
@@ -662,6 +663,76 @@
     submitButton.classList.toggle('is-hidden', currentStep !== steps.length - 1);
   }
 
+  function goToStep(index) {
+    currentStep = Math.max(0, Math.min(index, steps.length - 1));
+    updateProgress();
+  }
+
+  function getNextFocusable(stepIndex) {
+    const selectors = [
+      '[data-step="1"] select[name="itinProfile"]',
+      '[data-step="2"] input[name="contact.email"]',
+    ];
+
+    const selector = selectors[stepIndex];
+    if (!selector) return null;
+    return form.querySelector(selector);
+  }
+
+  function maybeAutoAdvanceFromStart(changedName) {
+    const payload = collectPayload();
+
+    if (changedName === 'applicationType' && currentStep === 0 && validateField('applicationType', payload)) {
+      window.clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = window.setTimeout(() => {
+        const latestPayload = collectPayload();
+        if (currentStep !== 0 || !validateField('applicationType', latestPayload)) return;
+        setStatus('');
+        goToStep(1);
+        const nextField = getNextFocusable(1);
+        if (nextField && typeof nextField.focus === 'function') {
+          nextField.focus();
+        }
+      }, 140);
+      return;
+    }
+
+    if (changedName === 'itinProfile' && currentStep === 1 && validateField('itinProfile', payload)) {
+      window.clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = window.setTimeout(() => {
+        const latestPayload = collectPayload();
+        if (currentStep !== 1 || !validateField('itinProfile', latestPayload)) return;
+        setStatus('');
+        goToStep(2);
+        const nextField = getNextFocusable(2);
+        if (nextField && typeof nextField.focus === 'function') {
+          nextField.focus();
+        }
+      }, 140);
+    }
+  }
+
+  function getFirstIncompleteStep() {
+    const payload = collectPayload();
+
+    for (let index = 0; index < steps.length; index += 1) {
+      const names = new Set(stepRules[index] || []);
+
+      if (index === 3) {
+        conditionalFields(payload).forEach((name) => {
+          names.add(name);
+        });
+      }
+
+      const isComplete = Array.from(names).every((name) => validateField(name, payload));
+      if (!isComplete) {
+        return index;
+      }
+    }
+
+    return steps.length - 1;
+  }
+
   async function saveDraft(showMessage) {
     const payload = collectPayload();
     if (!hasMeaningfulData(payload)) return;
@@ -744,13 +815,11 @@
 
   nextButton.addEventListener('click', () => {
     if (!validateStep(currentStep)) return;
-    currentStep = Math.min(currentStep + 1, steps.length - 1);
-    updateProgress();
+    goToStep(currentStep + 1);
   });
 
   prevButton.addEventListener('click', () => {
-    currentStep = Math.max(currentStep - 1, 0);
-    updateProgress();
+    goToStep(currentStep - 1);
     setStatus('');
   });
 
@@ -765,9 +834,10 @@
     updatePriorItinGroups();
     scheduleSave();
   });
-  form.addEventListener('change', () => {
+  form.addEventListener('change', (event) => {
     updateReasonGroups();
     updatePriorItinGroups();
+    maybeAutoAdvanceFromStart(event.target && event.target.name ? event.target.name : '');
     scheduleSave();
   });
 
@@ -791,5 +861,13 @@
 
   updateReasonGroups();
   updatePriorItinGroups();
+  currentStep = getFirstIncompleteStep();
   updateProgress();
+
+  window.setTimeout(() => {
+    updateReasonGroups();
+    updatePriorItinGroups();
+    currentStep = getFirstIncompleteStep();
+    updateProgress();
+  }, 180);
 })();
