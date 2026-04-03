@@ -443,6 +443,19 @@ app.get('/', (req, res) => {
 app.get('/apply', (req, res) => {
   const savedDraft = req.query.draft ? getDraft(String(req.query.draft)) : null;
   const presetType = req.query.type === 'renewal' ? 'renewal' : req.query.type === 'new' ? 'new' : '';
+  const allowedItinProfiles = new Set(['individual', 'spouse', 'dependent', 'student-researcher', 'treaty-other']);
+  const presetItinProfile = allowedItinProfiles.has(String(req.query.itinProfile || '').trim())
+    ? String(req.query.itinProfile).trim()
+    : '';
+  const initialPreset = {};
+
+  if (presetType) {
+    initialPreset.applicationType = presetType;
+  }
+
+  if (presetItinProfile) {
+    initialPreset.itinProfile = presetItinProfile;
+  }
 
   res.render(
     'apply',
@@ -452,7 +465,7 @@ app.get('/apply', (req, res) => {
       metaDescription:
         'Begin your private ITIN assistance application with a secure multi-step intake and clear compliance disclosures.',
       canonical: `${site.baseUrl}/apply`,
-      initialDraft: savedDraft ? savedDraft.payload : (presetType ? { applicationType: presetType } : null),
+      initialDraft: savedDraft ? savedDraft.payload : (Object.keys(initialPreset).length ? initialPreset : null),
       wizardMode: 'standalone',
       draftMeta: savedDraft,
     })

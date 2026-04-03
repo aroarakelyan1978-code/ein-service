@@ -797,7 +797,9 @@
 
   if (serverDraft) {
     populateFromData(serverDraft);
-    setStatus('Saved draft restored.');
+    if (config.initialDraftMode === 'draft') {
+      setStatus('Saved draft restored.');
+    }
   } else if (localDraft && localDraft.savedByUser && localDraft.payload) {
     populateFromData(localDraft.payload);
     draftId = localDraft.draftId || draftId;

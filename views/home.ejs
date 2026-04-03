@@ -7,6 +7,7 @@
     {
       title: 'New ITIN Application Assistance',
       service: 'new-itin-application-assistance',
+      applyHref: '/apply?type=new',
       copy: [
         'Guided help for first-time ITIN applicants who need Form W-7 preparation support, document checklist guidance, and internal order tracking.',
         'This option is designed for applicants who have never received an ITIN and need help preparing a new request with the correct supporting information.',
@@ -16,6 +17,7 @@
     {
       title: 'ITIN Renewal Assistance',
       service: 'itin-renewal-assistance',
+      applyHref: '/apply?type=renewal',
       copy: [
         'Support for renewing an existing ITIN when a prior number has expired or needs to be reactivated for filing purposes.',
         'Our guided renewal intake is built for applicants who were previously issued an ITIN and now need to renew it before filing or claiming tax-related benefits.',
@@ -25,6 +27,7 @@
     {
       title: 'Spouse ITIN Assistance',
       service: 'new-itin-application-assistance',
+      applyHref: '/apply?itinProfile=spouse',
       copy: [
         'Private preparation support for spouses listed on a U.S. federal tax return who are not eligible for a Social Security number.',
         'This category is commonly used when a spouse must be included on a tax filing but does not qualify for an SSN and needs ITIN preparation help instead.',
@@ -34,6 +37,7 @@
     {
       title: 'Dependent ITIN Assistance',
       service: 'new-itin-application-assistance',
+      applyHref: '/apply?itinProfile=dependent',
       copy: [
         'Guided application help for qualifying dependents who need an ITIN for tax filing or related IRS processing purposes.',
         'This option helps families prepare an ITIN request for a dependent who must be listed for filing, credit, or supporting tax documentation purposes.',
@@ -43,6 +47,7 @@
     {
       title: 'Resident Alien Filing Support',
       service: 'form-w7-preparation-review',
+      applyHref: '/apply?itinProfile=individual',
       copy: [
         'Assistance for resident aliens who need an ITIN to complete a U.S. federal tax filing and are not eligible for an SSN.',
         'This intake is intended for applicants who meet resident filing rules but still require an ITIN to move forward with the W-7 process and tax filing support.',
@@ -52,6 +57,7 @@
     {
       title: 'Nonresident Alien Filing Support',
       service: 'form-w7-preparation-review',
+      applyHref: '/apply?itinProfile=individual',
       copy: [
         'Preparation support for nonresident applicants who require an ITIN for U.S. federal return filing or related tax reporting.',
         'This option is intended for applicants who are filing as nonresident aliens and need guided help choosing the correct W-7 reason and supporting documents.',
@@ -61,6 +67,7 @@
     {
       title: 'Tax Treaty Benefit Cases',
       service: 'form-w7-preparation-review',
+      applyHref: '/apply?itinProfile=treaty-other',
       copy: [
         'Help reviewing treaty-related details when an applicant needs an ITIN to claim a tax treaty benefit and complete the related W-7 reason.',
         'This category is for applicants who need extra guidance with treaty country details, treaty article references, and the corresponding W-7 explanation fields.',
@@ -70,6 +77,7 @@
     {
       title: 'Student / Professor / Researcher Cases',
       service: 'form-w7-preparation-review',
+      applyHref: '/apply?itinProfile=student-researcher',
       copy: [
         'Guided support for applicants filing under the student, professor, or researcher categories described in the Form W-7 instructions.',
         'This option is designed for applicants whose ITIN request falls under the education or research categories and may involve exception-based documentation review.',
@@ -79,6 +87,7 @@
     {
       title: 'Form W-7 Review Service',
       service: 'form-w7-preparation-review',
+      applyHref: '/apply',
       copy: [
         'A structured review of the information provided for completeness, common issues, and packet readiness before submission steps.',
         'This service is useful when the applicant already has basic information prepared but wants guided review support before moving forward with the final packet.',
@@ -88,6 +97,7 @@
     {
       title: 'Document Checklist Guidance',
       service: 'document-checklist-guidance',
+      applyHref: '/apply',
       copy: [
         'Help identifying the documents typically needed to establish identity and foreign status for an ITIN application packet.',
         'This option is for applicants who mainly need document guidance before starting or completing the rest of the intake.',
@@ -143,7 +153,7 @@
               <% item.copy.forEach(function(copyItem) { %>
                 <p><%= copyItem %></p>
               <% }) %>
-              <a class="landing-type-link" href="/service-request?service=<%= item.service %>">Start Application</a>
+              <a class="landing-type-link" href="<%= item.applyHref %>">Start Application</a>
             </div>
           </details>
         <% }) %>

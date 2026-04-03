@@ -16,7 +16,7 @@
       <p class="footer-simple-copy">&copy; <%= year %> <%= site.businessName %>. All Rights Reserved.</p>
     </div>
   </footer>
-  <script id="itin-form-config" type="application/json"><%- JSON.stringify({ reasonOptions, documentOptions, initialDraft, feeDisplay: site.serviceFeeDisplay, disclosure: site.disclosure, resumeDraftId: draftMeta ? draftMeta.draftId : '' }) %></script>
+  <script id="itin-form-config" type="application/json"><%- JSON.stringify({ reasonOptions, documentOptions, initialDraft, feeDisplay: site.serviceFeeDisplay, disclosure: site.disclosure, resumeDraftId: draftMeta ? draftMeta.draftId : '', initialDraftMode: draftMeta ? 'draft' : (initialDraft ? 'preset' : '') }) %></script>
   <script src="/app.js" defer></script>
 </body>
 </html>
