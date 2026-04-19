@@ -503,7 +503,6 @@ app.post('/service-request', submissionLimiter, async (req, res) => {
     phone: normalizeText(req.body.phone),
     referenceNumber: normalizeText(req.body.referenceNumber),
     message: normalizeText(req.body.message),
-    privateService: normalizeBoolean(req.body.privateService),
   };
 
   if (
@@ -511,8 +510,7 @@ app.post('/service-request', submissionLimiter, async (req, res) => {
     !serviceRequestForm.firstName ||
     !serviceRequestForm.lastName ||
     !serviceRequestForm.email ||
-    !serviceRequestForm.phone ||
-    !serviceRequestForm.privateService
+    !serviceRequestForm.phone
   ) {
     return res.status(400).render(
       'service-request',

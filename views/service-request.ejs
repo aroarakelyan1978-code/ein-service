@@ -87,23 +87,6 @@
         </label>
       </section>
 
-      <section class="form-step" data-step="2">
-        <div class="application-step-title">
-          <h2>Disclosure and Submit</h2>
-        </div>
-
-        <div class="review-card service-request-review">
-          <ul>
-            <li><%= site.disclosure %></li>
-            <li>Your request is reviewed by our private support team and sent to <%= site.supportEmail %>.</li>
-          </ul>
-          <label class="check-inline">
-            <input type="checkbox" name="privateService" <%= serviceRequestForm.privateService ? 'checked' : '' %> />
-            <span>I understand this is a private assistance service and not the IRS.</span>
-          </label>
-        </div>
-      </section>
-
       <div class="form-actions application-form-actions">
         <button type="button" class="button button-secondary is-hidden" data-sr-prev-step>Back</button>
         <div class="action-group">

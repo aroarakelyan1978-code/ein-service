@@ -139,11 +139,7 @@
     const submitButton = serviceForm.querySelector('[data-sr-submit-form]');
     let currentStep = 0;
 
-    const stepRules = [
-      ['serviceType', 'firstName', 'lastName', 'email', 'phone'],
-      [],
-      ['privateService'],
-    ];
+    const stepRules = [['serviceType', 'firstName', 'lastName', 'email', 'phone'], []];
 
     function getNodes(name) {
       const field = serviceForm.elements.namedItem(name);
